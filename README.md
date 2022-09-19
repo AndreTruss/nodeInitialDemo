@@ -31,10 +31,13 @@ Execute this code to download the necessaries modules:
 npm i
 ``` 
 Execute this code to run with nodemon:
+
 ```
 npm run dev
 ´´´
+
 or with node:
+
 ```
 npm start
 ```
