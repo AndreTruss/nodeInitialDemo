@@ -34,7 +34,7 @@ Execute this code to run with nodemon:
 
 ```
 npm run dev
-´´´
+```
 
 or with node:
 
