@@ -2,9 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const http = require('http');
 const { Server } = require('socket.io');
-const routes = require('./routes/auth-routes');
-const { connectDB } = require('./db');
-const { CORS_URL } = require('./config');
+const routerLogin = require('./routes/route');
+const { connectDB } = require('./config/db');
+const { CORS_URL } = require('./config/config');
 
 const app = express();
 const httpServer = http.createServer( app );
@@ -18,7 +18,7 @@ app.use( express.json() );
 //app.use(cookieParser());
 
 // Routes
-app.use( routes );
+app.use( '/', routerLogin );
 
 // DB initialization
 connectDB();
