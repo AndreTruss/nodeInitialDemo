@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser')
 const http = require('http');
 const { Server } = require('socket.io');
 const routerLogin = require('./routes/route');
@@ -15,7 +16,7 @@ app.use( cors( {
     optionsSuccessStatus: 200,
   } ) );
 app.use( express.json() );
-//app.use(cookieParser());
+app.use( cookieParser() );
 
 // Routes
 app.use( '/', routerLogin );
@@ -34,5 +35,5 @@ require('./socket-io')(io);
 
 const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
+  console.log(`Listening on port ${PORT}`);
 });

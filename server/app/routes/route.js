@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { JWTController } = require('../controllers/JWT-controller');
-const { loginAuthentication } = require('../middlewares/loginAuthentication');
+const loginController = require('../controllers/controller');
 
-router.post('/signup', loginAuthentication, JWTController );
-router.post('/login', loginAuthentication, JWTController );
-router.get('/logout', loginAuthentication, JWTController );
+router.post('/signup', loginController.signup );
+router.post('/login', loginController.login );
+router.get('/logout', loginController.logout );
 
 module.exports = router;
