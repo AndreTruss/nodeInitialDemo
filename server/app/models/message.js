@@ -5,7 +5,7 @@ const messageSchema = new mongoose.Schema({
         type: String, 
         required: true,  
     },
-    userId: { 
+    user_id: { 
         type: String, 
         required: true,  
     },
@@ -13,7 +13,7 @@ const messageSchema = new mongoose.Schema({
         type: String, 
         required: true,  
     },
-    roomId: { 
+    room_id: { 
         type: String, 
         required: true,  
     }, 
