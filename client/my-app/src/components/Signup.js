@@ -18,7 +18,7 @@ function Signup() {
     try {
       const res = await fetch(`${API_BASE_URL}/signup`, {
         method: "POST",
-        credentials: "include",
+        
         body: JSON.stringify({ name, password }),
         headers: { "Content-Type": "application/json" },
       })

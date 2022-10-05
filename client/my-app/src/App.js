@@ -1,5 +1,5 @@
 import "./App.css"
-import { Router, Routes, Route } from "react-router-dom"
+import { HashRouter as Router, Routes, Route } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import Navbar from "./components/Navbar"
 import Signup from "./components/Signup"

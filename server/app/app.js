@@ -6,6 +6,7 @@ const { Server } = require('socket.io');
 const routerLogin = require('./routes/route');
 const { connectDB } = require('./config/db');
 const { CORS_URL } = require('./config/config');
+const { socketio} = require('./socket-io')
 
 const app = express();
 const httpServer = http.createServer( app );
@@ -31,7 +32,7 @@ const io = new Server( httpServer, {
   },
 });
 // Call the function on './socket-io', and pass io as argument
-require('./socket-io')(io);
+socketio(io);
 
 const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () => {
