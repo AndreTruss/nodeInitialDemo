@@ -1,14 +1,12 @@
 import React, { useState, useContext } from "react"
 import { Navigate } from "react-router-dom"
-import { GoogleLoginButton } from "react-social-login-buttons"
-import { UserContext } from "../../UserContext"
+import { UserContext } from "../UserContext"
 import "./Login.css"
 const API_BASE_URL = 'http://localhost:5000';
 
 function Login() {
   const { user, setUser } = useContext(UserContext)
   const [name, setName] = useState("") // TODO borrar?
-  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [nameError, setNameError] = useState("")
   const [loginError, setLoginError] = useState("")
@@ -19,11 +17,10 @@ function Login() {
     setLoginError("")
 
     try {
-      const la_urls = `${API_BASE_URL}/login`
       const res = await fetch(`${API_BASE_URL}/login`, {
         method: "POST",
         credentials: "include", // TODO ver que coñoo es esta opcion
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify({ name, password }),
         headers: { "Content-Type": "application/json" },
       })
       const data = await res.json()
