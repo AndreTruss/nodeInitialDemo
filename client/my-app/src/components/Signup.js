@@ -16,12 +16,13 @@ function Signup() {
     setPasswordError("")
     /* TODO borrar estos logs */
     try {
-      const res = await fetch(`${API_BASE_URL}/signup`, {
+      const options = {
         method: "POST",
-        
+        credentials: 'include',
         body: JSON.stringify({ name, password }),
         headers: { "Content-Type": "application/json" },
-      })
+      }
+      const res = await fetch(`${API_BASE_URL}/signup`, options)
       const data = await res.json()
 
       if (data.errors) {

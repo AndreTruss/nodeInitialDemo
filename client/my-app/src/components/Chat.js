@@ -25,19 +25,19 @@ function Chat() {
   const sendMessage = (e) => {
     e.preventDefault()
     if (message) {
-      socket.emit("sendMessage", message, room_id, () => setMessage(""))
+      socket.emit("send-message", message, room_id, () => setMessage(""))
     }
   }
 
   useEffect(() => {
-    socket.on("newMessage", (newMessage) => {
+    socket.on("new-message", (newMessage) => {
       setMessageLog((input) => [...input, newMessage])
     })
   }, [])
 
   useEffect(() => {
-    socket.emit("get-message-history", room_id)
-    socket.on("message-history", (result) => {
+    socket.emit("message-history", room_id)
+    socket.on("history", (result) => {
       setMessageLog(result)
     })
   }, [])

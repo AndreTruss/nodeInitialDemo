@@ -1,5 +1,5 @@
 const mongoose = require( 'mongoose' );
-const { MONGODB_URI } = require( '../config/config' );
+const MONGODB_URI= 'mongodb://localhost:27017/chat-app'
 
 const connectDB = async() => {
     try {

@@ -22,7 +22,7 @@ function Home() {
   }, [])
 
   useEffect(() => {
-    socket.on("rooms-in-db", (roomsInDB) => {
+    socket.on("rooms-found", (roomsInDB) => {
       setRooms(roomsInDB)
     })
   })

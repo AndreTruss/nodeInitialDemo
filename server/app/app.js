@@ -3,9 +3,9 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser')
 const http = require('http');
 const { Server } = require('socket.io');
-const routerLogin = require('./routes/route');
+const router = require('./routes/route');
 const { connectDB } = require('./config/db');
-const { CORS_URL } = require('./config/config');
+const  CORS_URL  = 'http://localhost:3000';
 const { socketio} = require('./socket-io')
 
 const app = express();
@@ -20,7 +20,7 @@ app.use( express.json() );
 app.use( cookieParser() );
 
 // Routes
-app.use( '/', routerLogin );
+app.use( '/', router );
 
 // DB initialization
 connectDB();
