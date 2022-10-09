@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const createJWT = ( id ) => { jwt.sign( { id }, process.env.SECRET, { expiresIn: 60 * 60 })};
+const createJWT =  jwt.sign( { id: '1234' }, 'process.env.SECRET', { expiresIn: 60 * 60 });
 
 const verifyJWT = async (req, res, next) => {
     try {
@@ -14,5 +14,6 @@ const verifyJWT = async (req, res, next) => {
         res.status(401).json({ message: "Forbidden."})
     }
 };
-
+let tok = createJWT
+console.log(tok)
 module.exports = { createJWT, verifyJWT }

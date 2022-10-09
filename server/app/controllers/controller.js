@@ -1,6 +1,6 @@
 const User = require('../models/user');
-const Room = require('../models/Room');
-const Message = require('../models/Message');
+const Room = require('../models/room');
+const Message = require('../models/message');
 const brcypt = require('bcrypt');
 const { createJWT } = require('../helpers/helper');
 

@@ -3,6 +3,17 @@ const Message = require( './models/message' );
 const users = [];
 
 const socketio = ( io ) => {
+    io.use(async (socket, next) => {
+        try {
+            const token = socket.handshake.query.token;
+            const payload = await jwt.verify(token, process.env.SECRET);        
+            socket.id  = payload.id;
+            next();
+        } catch (err) {
+            console.log(err);
+        }
+    });
+
     io.on( 'connection', ( socket ) => {
         console.log( 'user connected on socket.id:', socket.id );
 
