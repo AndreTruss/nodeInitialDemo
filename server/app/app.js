@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const cookieParser = require('cookie-parser')
 const http = require('http');
 const { Server } = require('socket.io');
 const router = require('./routes/route');
@@ -17,7 +16,7 @@ app.use( cors( {
     optionsSuccessStatus: 200,
   } ) );
 app.use( express.json() );
-app.use( cookieParser() );
+app.use( express.urlencoded({ extended: true }) )
 
 // Routes
 app.use( '/', router );
@@ -31,8 +30,8 @@ const io = new Server( httpServer, {
     origin: CORS_URL,
   },
 });
-// Call the function on './socket-io', and pass io as argument
-socketio(io);
+
+socketio( io );
 
 const PORT = process.env.PORT || 5000;
 httpServer.listen(PORT, () => {

@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const loginController = require('../controllers/controller');
+const controllers = require('../controllers/controller');
+const { verifyJWT } = require('../helpers/helper')
 
-router.post('/signup', loginController.signup );
-router.post('/login', loginController.login );
-router.get('/logout', loginController.logout );
+router.post('/signup', controllers.signup );
+router.post('/login', controllers.login );
+
+router.post('/room', verifyJWT, controllers.createRoom );
+router.get('/room', verifyJWT, controllers.getAllRooms );
+router.get('/room/:id', verifyJWT, controllers.getOneRoom );
+router.delete('/room', verifyJWT, controllers.deleteRoom );
 
 module.exports = router;

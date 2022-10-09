@@ -1,33 +1,85 @@
 const User = require('../models/user');
+const Room = require('../models/Room');
+const Message = require('../models/Message');
+const brcypt = require('bcrypt');
 const { createJWT } = require('../helpers/helper');
 
 const signup = async ( req, res ) => {
     const { name, password } = req.body;
-    try {
-        const user = await User.create({ name, password });
-        //const token = createJWT( user._id );
-        //res.cookie( 'jwt', token, { httpOnly: true, maxAge: 1500000, secure: true, samesite: 'none' });
-        res.status( 201 ).json({ user })
-    } catch( error ) {
-        res.status( 400 ).json({ error })
-    }
-}
+    const findUser = await User.findOne( { name })
+    if (findUser) 
+        return res.status(400).json({ status: false, message: 'Name already used.'});
+
+    if (password.length < 6) 
+        return res.status(400).json({ status: false, message: 'Password must be at least 6 characters long.' });
+
+    const user = new User({ 
+        name,  
+        password: await brcypt.hash(password, 10)
+    });
+
+    await user.save();
+
+    res.status(200).json({ 
+        status: true,
+        message: `User created.`,
+        user
+    })
+};
 
 const login = async ( req, res ) => {
     const { name, password } = req.body;
-    try {
-        const user = await User.userLogin({ name, password });
-        const token = createJWT( user._id );
-        //res.cookie( 'jwt', token, { httpOnly: true, maxAge: 900000, secure: true, samesite: 'none' });
-        res.status( 201 ).json({ user, token })
-    } catch( error ) {
-        res.status( 400 ).json({ error })
-    }
+    const user = await User.findOne({ name });
+    if (!user ) 
+        return res.status(404).json({ status: false, message: "User doesn't exist."});
+    const comparePW = await brcypt.compare(password, user.password);
+
+    if ( !comparePW ) 
+        return res.status(400).json({ status: false, message: "Wrong password."});
+
+    const token = createJWT( user._id );
+
+    res.status(200).json({
+        status: true,
+        message: "User logged.",
+        token
+    }); 
+
+};
+
+
+const createRoom = async (req, res) => {
+    const { name } = req.body;
+    
+    const findRoom = await Room.findOne({ name });
+    if (findRoom) 
+        return res.status(400).json({ message: `Room ${name} already exits.`});
+
+    const room = new Room( name );
+    await room.save();
+    res.status(200).json({ message: `Room ${name} created.`, room: room});
+};
+
+const getAllRooms = async (req, res) => {
+    const rooms = await Room.find({});   
+    res.status(200).json(rooms);
+};
+
+const getOneRoom = async (req, res) => {
+    const id = req.params.id;
+    const getRoom = await Room.findById(id)
+    if (!getRoom)
+        return res.status(400).json({ message: `No Room with this ID.` }); 
+    res.status(200).json({ room: getRoom});
 }
 
-const logout = ( req, res ) => {
-    res.cookie( 'jwt', '', { maxAge: -1 });
-    res.status( 200 ).json({ logout: true })
-}
+const deleteRoom = async (req, res) => {    
+    const deleteRooms = await Room.findByIdAndDelete(req.body.id);
+    await Message.deleteMany({ where: { "room._id": req.body.id }});
 
-module.exports = { signup, login, logout }
+    if (!deleteRooms) 
+        return res.status(400).json({ message: `No Room with this ID.`});  
+    res.status(200).json({ message: 'Room deleted.'});    
+};
+
+module.exports = { signup, login, createRoom, getAllRooms, getOneRoom, deleteRoom }
