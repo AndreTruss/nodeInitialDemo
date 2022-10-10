@@ -1,13 +1,15 @@
 const Room = require( './models/room' );
 const Message = require( './models/message' );
+const jwt = require('jsonwebtoken');
 const users = [];
 
 const socketio = ( io ) => {
+    
     io.use(async (socket, next) => {
         try {
             const token = socket.handshake.query.token;
-            const payload = await jwt.verify(token, process.env.SECRET);        
-            socket.id  = payload.id;
+            const payload = await jwt.verify(token, 'process.env.SECRET');        
+            socket.id = payload.id;
             next();
         } catch (err) {
             console.log(err);

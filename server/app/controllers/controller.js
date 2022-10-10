@@ -2,16 +2,16 @@ const User = require('../models/user');
 const Room = require('../models/room');
 const Message = require('../models/message');
 const brcypt = require('bcrypt');
-const { createJWT } = require('../helpers/helper');
+const jwt = require('jsonwebtoken');
 
 const signup = async ( req, res ) => {
     const { name, password } = req.body;
     const findUser = await User.findOne( { name })
     if (findUser) 
-        return res.status(400).json({ status: false, message: 'Name already used.'});
+        return res.status(400).json({ message: 'Name already used.'});
 
     if (password.length < 6) 
-        return res.status(400).json({ status: false, message: 'Password must be at least 6 characters long.' });
+        return res.status(400).json({ message: 'Password must be at least 6 characters long.' });
 
     const user = new User({ 
         name,  
@@ -21,7 +21,6 @@ const signup = async ( req, res ) => {
     await user.save();
 
     res.status(200).json({ 
-        status: true,
         message: `User created.`,
         user
     })
@@ -31,16 +30,15 @@ const login = async ( req, res ) => {
     const { name, password } = req.body;
     const user = await User.findOne({ name });
     if (!user ) 
-        return res.status(404).json({ status: false, message: "User doesn't exist."});
+        return res.status(404).json({ message: "User doesn't exist."});
     const comparePW = await brcypt.compare(password, user.password);
 
     if ( !comparePW ) 
-        return res.status(400).json({ status: false, message: "Wrong password."});
+        return res.status(400).json({ message: "Wrong password."});
 
-    const token = createJWT( user._id );
+    const token = jwt.sign( { id: user._id }, 'process.env.SECRET', { expiresIn: 60 * 60 });
 
     res.status(200).json({
-        status: true,
         message: "User logged.",
         token
     }); 
