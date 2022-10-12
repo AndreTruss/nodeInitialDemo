@@ -2,10 +2,12 @@ const jwt = require('jsonwebtoken');
 
 const verifyJWT = async (req, res, next) => {
     try {
-        const token = req.headers.authorization;
+        const token = req.header('Authorization');
+        //console.log(req.headers.authorization, token)
         if (!token) 
             return res.status(401).json( { message: "Forbidden."} )
-        const payload = await jwt.verify( token, 'process.env.SECRET' );        
+        const payload = await jwt.verify( token, 'process.env.SECRET' ); 
+        //console.log(payload)       
         req.payload = payload;
         next();
     } catch (err) {

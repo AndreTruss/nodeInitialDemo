@@ -16,12 +16,17 @@ const Home = ({ socket }) => {
   useEffect(() => {
     if (alert) {
       const getChatrooms = async () => {
-        const res = await fetch(url, {
+        const options = {
+          method: 'GET',
           headers: {
             Authorization: localStorage.getItem('token'),
-          }
-        });
+            'Content-Type': 'application/json',
+          },
+          
+        };
+        const res = await fetch(url, options );
         const data = await res.json();
+        //console.log(data)
         if (data.message === 'Forbidden.') setIsData(false);
         setChatrooms(data);
       };
@@ -46,9 +51,10 @@ const Home = ({ socket }) => {
         body: JSON.stringify( { name: newChatroom } )
       };
       const res = await fetch(url, options);
+      console.log(res)
       const data = await res.json();
 
-      if (data) {
+      if (data.status) {
         setNewChatroom('');
         setAlert(true);
       } else {

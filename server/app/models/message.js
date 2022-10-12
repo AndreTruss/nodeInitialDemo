@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
     user_id: { 
-        type: String, 
+        type: mongoose.Schema.Types.ObjectId, 
         required: true,  
     },
     message: { 
@@ -10,10 +10,10 @@ const messageSchema = new mongoose.Schema({
         required: true,  
     },
     room_id: { 
-        type: String, 
+        type: mongoose.Schema.Types.ObjectId, 
         required: true,  
     }, 
-}, { timestamps: true });
+}, { versionKey: false },{ timestamps: true });
 
 const Message = mongoose.model( 'message', messageSchema );
 

@@ -7,17 +7,10 @@
 }
 
 #dark {
-    --dark-color: #333;
-	--light-color: #ccc;
+    --dark-color: rgb(205, 205, 205);
+	--light-color: rgb(173, 38, 38);
 	--hover-color: #eee;
     --bck-color: #6f93d2;
-}
-
-#light {
-    --dark-color: #ccc;
-	--light-color: #333;
-	--hover-color: rgb(85, 85, 85);
-    --bck-color: #eee;
 }
 
 * {

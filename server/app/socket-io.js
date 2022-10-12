@@ -1,5 +1,6 @@
 const User = require( './models/user' );
 const Message = require( './models/message' );
+require('./models/room');
 const jwt = require('jsonwebtoken');
 
 function socketio( io ){

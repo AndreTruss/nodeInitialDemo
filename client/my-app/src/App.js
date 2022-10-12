@@ -39,14 +39,14 @@ useEffect(() => {
 }, []);
 
   return (
-    <div className="App">
+    <div className="App" id="dark">
     <Router>
           <Routes>
             <Route exact path="/" element={<Navbar />} />
             <Route path="/login" element={<Login setupSocket={ setupSocket } />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/home" element={<Home socket={ socket } />} />
-            <Route path="/chat/:id/" element={<Chat socket={ socket } />} />
+            <Route path="/chat/:room_id/" element={<Chat socket={ socket } />} />
           </Routes>
     </Router>
     </div>

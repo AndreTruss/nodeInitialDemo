@@ -4,7 +4,7 @@ import Messages from './Messages';
 
 const Chat = ({ socket }) => {
   const navigate = useNavigate();
-  const { chatId } = useParams();
+  const { room_id } = useParams();
   const inputRef = useRef();
 
   const [messages, setMessages] = useState([]);
@@ -17,7 +17,7 @@ const Chat = ({ socket }) => {
     e.preventDefault();
     if (socket &&  newMessage !== '') {
       socket.emit('chatMessage', {
-        chatId, 
+        room_id, 
         message: newMessage,
       });
       setNewMessage('');
@@ -34,28 +34,28 @@ const Chat = ({ socket }) => {
   }, [messages, socket])
 
   useEffect(() => {
-    if (socket) socket.emit('join', { chatId });
+    if (socket) socket.emit('join', { room_id });
 
     return () => {
-      if (socket) socket.emit('leave', { chatId });
+      if (socket) socket.emit('leave', { room_id });
     }
-  }, [socket, chatId]);
+  }, [socket, room_id]);
 
   // Get chat name with the ID in params.
   useEffect(() => {
     if (socket){
       const getChatName = async () => {
-      const res = await fetch('http://localhost:5000/room/' + chatId, {
+      const res = await fetch('http://localhost:5000/room/' + room_id, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
       });
       const data = await res.json();
-      if (data.message !== 'Forbidden.') setChatName(data.chat.name)
+      if (data.message !== 'Forbidden.') setChatName(data.room.name)
       }
       getChatName();
     }
-  }, [chatId, socket])
+  }, [room_id, socket])
 
   const logout = () => {
     localStorage.clear();    
@@ -88,7 +88,7 @@ const Chat = ({ socket }) => {
               <input type='text' name='message' value={ newMessage } placeholder='write a message' onChange={ handleChange } ref={ inputRef } autoFocus></input>
             </div>
             <div>
-              <button type='submit' className='chatButton'><span className="material-symbols-outlined">send</span></button>
+              <button type='submit' className='chatButton'><span className="material-symbols-outlined logout">send</span></button>
             </div>
           </div>
         </form>
