@@ -9,7 +9,7 @@ const verifyJWT = async (req, res, next) => {
         req.payload = payload;
         next();
     } catch (err) {
-        res.status(401).json({ message: "Forbidden."})
+        res.status(403).json({ message: "Forbidden."})
     }
 };
 

@@ -53,7 +53,7 @@ const createRoom = async (req, res) => {
     if (findRoom) 
         return res.status(400).json({ message: `Room ${name} already exits.`});
 
-    const room = new Room( name );
+    const room = new Room( {name} );
     await room.save();
     res.status(200).json({ message: `Room ${name} created.`, room: room});
 };

@@ -1,13 +1,174 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@import url('https://fonts.googleapis.com/css2?family=Convergence&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500&display=swap');
+
+:root {
+    --font-1: 'Convergence', sans-serif;
+    --font-2: 'Poppins', sans-serif;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+#dark {
+    --dark-color: #333;
+	--light-color: #ccc;
+	--hover-color: #eee;
+    --bck-color: #6f93d2;
+}
+
+#light {
+    --dark-color: #ccc;
+	--light-color: #333;
+	--hover-color: rgb(85, 85, 85);
+    --bck-color: #eee;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+}
+
+body {
+    font-family: var(--font-1);
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    background-color: rgb(85, 85, 85);
+}
+
+.card {
+    background: var(--dark-color);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    border-radius: 4px;
+    padding: 2rem 2rem;
+    position: relative;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cardHeader {
+    color: var(--light-color);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+  
+.form {
+    position: relative;
+    width: 15rem;
+    height: 3rem;
+    margin-top: 30px;
+}
+
+.form .input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--light-color);
+    border-radius: 0.4rem;
+    font-family: var(--font-2);
+    font-size: 0.7em;
+    color: var(--light-color);
+    outline: none;
+    padding: 1.25rem;
+    background: none;
+}
+
+.input:hover {
+    border-color: var(--hover-color); 
+}
+
+.form .label {
+    position: absolute;
+    left: 1rem;
+    top: 0.8rem;
+    padding: 0 0.5rem;
+    color: var(--light-color);
+    cursor: text;
+    background-color: var(--dark-color);
+    top: -0.5rem;
+    font-size: 0.8rem;
+    left: 0.8rem;
+}
+
+.text {
+    font-size: 0.5em;
+    position: inherit;
+    margin: 2px 7px;
+    color: var(--light-color);
+}
+
+.button {
+    font-family: var(--font-1);
+    font-size: 1.2em;
+    background: var(--dark-color);
+    color: var(--light-color);
+    border: none;
+    padding: 1.5rem 2rem 0rem 2rem;
+    width: 100%;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.span {
+    font-size: 0.5em;
+    cursor: pointer;
+    position: relative;
+    left: 42%;
+}
+
+.button:hover,
+.span:hover {
+    color: var(--hover-color); 
+}
+
+.chatrooms {
+    margin-top: 1.5rem;
+    font-size: 0.5em;
+    overflow: auto;
+    max-height: 200px;
+}
+  
+.chatroom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.chatName {
+    font-size: 1.6em;
+    font-family: var(--font-1);
+}
+
+.chatName:hover {
+    color: var(--hover-color);
+}
+
+.join {
+    background: var(--light-color);
+    color: var(--dark-color);
+    padding: 0.25rem 0.5rem;
+    border-radius: 2px;
+    cursor: pointer;
+    margin-right: 5px;
+    font-size: 0.7em;
+}
+
+.join:hover {
+    background-color: var(--hover-color);
+}
+
+a {
+    text-decoration: none;
+    color: var(--light-color);
+}
+
+h3 {
+    color: var(--light-color);
 }

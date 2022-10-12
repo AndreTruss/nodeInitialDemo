@@ -1,9 +1,8 @@
-const Room = require( './models/room' );
+const User = require( './models/user' );
 const Message = require( './models/message' );
 const jwt = require('jsonwebtoken');
-const users = [];
 
-const socketio = ( io ) => {
+function socketio( io ){
     
     io.use(async (socket, next) => {
         try {
@@ -19,42 +18,29 @@ const socketio = ( io ) => {
     io.on( 'connection', ( socket ) => {
         console.log( 'user connected on socket.id:', socket.id );
 
-        const rooms = Room.find();
-        socket.emit( 'rooms-found', rooms );
-        
-        socket.on( 'create-room', ( name ) => {
-            const room = new Room({ name });
-            room.save();
-            io.emit( 'room-created', room );
+        socket.on('disconnect', () => {
+            console.log("Disconnected:", socket.id);
         });
-
-        socket.on( 'join', ({ name, room_id, user_id }) => {
-            const findUser = users.find( (user) => user.room_id === room_id && user.user_id === user_id );
-            if ( findUser ){ return 'User is already in the room' };
-
-            const newUser = { socket_id: socket.id, name, user_id, room_id };
-            users.push( newUser );
-
+    
+        socket.on('join', ({ room_id }) => {
             socket.join( room_id );
+            console.log('A user join chat:', room_id);
         });
-
-        socket.on( 'send-message', ( message, room_id ) => {
-            const getUser = users.find( (user) => user.socket_id === socket.id );
-
-            const newMessage = new Message( getUser.name, getUser.user_id, room_id, message );
-            newMessage.save();
-
-            io.to( room_id ).emit( 'new-message', newMessage );
+    
+        socket.on('leave', ({ room_id }) => {
+            socket.leave( room_id );
+            console.log('A user leave chat:', room_id);
         });
-
-        socket.on( 'message-history', ( room_id ) => {
-            const messages = Message.find({ room_id });
-            socket.emit( 'history', messages );
-        });
-
-        socket.on( 'disconnect', () => {
-            const index = users.findIndex( (user) => user.socket_id === socket.id );
-            users.splice( index, 1 );
+    
+        socket.on('chatMessage', async ({ room_id, message }) => {
+            const user = await User.findOne({ _id: socket.id })
+            const newMessage = new Message({ room_id, user_id: socket.id, message });
+            io.to(room_id).emit('newMessage', { 
+                message,
+                name: user.name,
+                user_id: socket.id,
+            });
+            await newMessage.save();
         });
     });
     }

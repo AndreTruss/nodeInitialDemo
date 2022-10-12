@@ -1,86 +1,63 @@
-import React, { useState, useContext } from "react"
-import { Navigate } from "react-router-dom"
-import { UserContext } from "../UserContext"
-import "./Login.css"
-const API_BASE_URL = 'http://localhost:5000';
+import React, { useState } from 'react';
+import { useNavigate, Link } from "react-router-dom";
 
-function Login() {
-  const { user, setUser } = useContext(UserContext)
-  const [name, setName] = useState("") // TODO borrar?
-  const [password, setPassword] = useState("")
-  const [nameError, setNameError] = useState("")
-  const [loginError, setLoginError] = useState("")
+const Login = ( props ) => {
+  const navigate = useNavigate();
+  const [text, setText] = useState('');
+  const [values, setValues] = useState({name: '', password: ''});
 
-  const submitHandler = async (e) => {
-    e.preventDefault()
-    setNameError("")
-    setLoginError("")
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/login`, {
-        method: "POST",
-        credentials: "include", // TODO ver que coñoo es esta opcion
-        body: JSON.stringify({ name, password }),
-        headers: { "Content-Type": "application/json" },
-      })
-      const data = await res.json()
-
-      if (data.errors) {
-        setLoginError(data.errors.login)
-        setNameError(data.errors.name)
-      }
-      if (data.user) {
-        setUser(data.user)
-        localStorage.setItem("user", JSON.stringify(data.user))
-      }
-    } catch (error) {
-      console.log(error)
-    }
+  const handleChange = e => setValues({ ...values, [e.target.name]: e.target.value });
+  
+  const validateForm = () => {
+    const { name, password } = values;
+    if (name === '' || password === '') {
+      setText('name and password is required.')
+      return false
+    } 
+    return true;    
   }
 
-  if (user) {
-    return <Navigate to="/" />
+  const handleSubmit = async e => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    const { name, password } = values;
+    const url = 'http://localhost:5000/login';
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, password })
+    };
+    const res = await fetch(url, options);
+    const data = await res.json();
+
+    if (data) {
+      localStorage.setItem('token', data.token);
+      props.setupSocket();
+      navigate('/home');
+    }
+    setText(data.message);
   }
 
   return (
-    <div className="row">
-      <h2>Welcome</h2>
-
-      <form className="login-form" onSubmit={submitHandler}>
-        <div className="row">
-          <div className="input-field col s12">
-            <input
-              id="name"
-              type="name"
-              className="validate"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <label htmlFor="name">Username</label>
-          </div>
+    <form autoComplete="off" onSubmit={ handleSubmit }>
+        <div className='card'>
+            <div className='cardHeader'>Log in</div>
+            <div className="form">
+                <input type="name" className='input' name="name" onChange={ handleChange} autoFocus />
+                <label htmlFor="name" className='label'>name</label>  
+            </div>
+            <div className="form">
+                <input type="password" className='input' name="password"  onChange={ handleChange } />
+                <label htmlFor="password" className='label'>password</label>
+            </div>
+            <div className='text'>{text}</div>
+            <button type='submit' className='button'>enter</button>
+            <span><Link to="/signup" className='span'>SIGN IN</Link></span>
         </div>
-
-        <div className="row">
-          <div className="input-field col s12">
-            <input
-              id="password"
-              type="password"
-              className="validate"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <div className="password error red-text">{loginError}</div>
-            <label htmlFor="password">Password</label>
-          </div>
-        </div>
-
-        <button className="btn row" style={{ width: "100%" }}>
-          Login
-        </button>
-      </form>
-    </div>
-  )
-}
+    </form>   
+ )
+}  
 
 export default Login

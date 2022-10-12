@@ -1,20 +1,22 @@
-import React from "react"
-import STB from "react-scroll-to-bottom"
-import Message from "./Message"
-import "./Messages.css"
+import React from 'react'
+import { useState, useEffect } from 'react';
 
-function Messages({ messageLog, user_id }) {
+const Messages = ({ message }) => {
+  const [userId, setUserId] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      setUserId(payload.id);
+    }
+  }, []);
   return (
-    <STB className="messages">
-      {messageLog.map((message) => (
-        <Message
-          key={message._id}
-          current_uid={user_id}
-          message={message}
-        />
-      ))}
-    </STB>
+    <div className={ userId === message.userId ? 'ownMessage' : 'otherMessage' }>
+      <span className='userName'>{ userId !== message.userId ? message.name + ': ' : null }</span>
+      <span className='message'>{message.message}</span>
+    </div> 
   )
-}
+} 
 
-export default Messages
+export default Messages;

@@ -1,82 +1,103 @@
-import React, { useContext, useState, useEffect } from "react"
-import { Navigate } from "react-router-dom"
-import io from "socket.io-client"
-import { UserContext } from "../UserContext"
-import RoomList from "./RoomList"
-const API_BASE_URL = 'http://localhost:5000'
+import React, { useState, useEffect, useRef } from 'react'
+import { useNavigate } from "react-router-dom";
+import DeleteChat from './DeleteChat';
 
-let socket // TODO poner esta variable adentro del useEffect
+const Home = ({ socket }) => {
+  const navigate = useNavigate();
+  const url = 'http://localhost:5000/room';
+  const [chatrooms, setChatrooms] = useState([]);
+  const [newChatroom, setNewChatroom] = useState([]);
+  const [text, setText] = useState('');
+  const [alert, setAlert] = useState(true);
+  const [isData, setIsData] = useState(true);
+  const inputRef = useRef();
 
-function Home() {
-  const { user, setUser } = useContext(UserContext)
-  const [room, setRoom] = useState("")
-  const [rooms, setRooms] = useState([])
-
+  // Get all the chats rooms
   useEffect(() => {
-    socket = io(API_BASE_URL)
-
-    return () => {
-      socket.disconnect()
-      socket.off()
+    if (alert) {
+      const getChatrooms = async () => {
+        const res = await fetch(url, {
+          headers: {
+            Authorization: localStorage.getItem('token'),
+          }
+        });
+        const data = await res.json();
+        if (data.message === 'Forbidden.') setIsData(false);
+        setChatrooms(data);
+      };
+      getChatrooms();
+      setAlert(false);
     }
-  }, [])
+  }, [chatrooms, alert]);
 
-  useEffect(() => {
-    socket.on("rooms-found", (roomsInDB) => {
-      setRooms(roomsInDB)
-    })
-  })
+  // Add new chat room
+  const handleChange = e => setNewChatroom(e.target.value);
 
-  useEffect(() => {
-    socket.on("room-created", (newRoom) => {
-      setRooms([...rooms, newRoom])
-    })
-  }, [rooms])
+  const handleSubmit = async e => {
+    e.preventDefault(); 
+    if (newChatroom !== ''){
+      setText('');
+      const options = {
+        method: 'POST',
+        headers: {
+          Authorization: localStorage.getItem('token'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify( { name: newChatroom } )
+      };
+      const res = await fetch(url, options);
+      const data = await res.json();
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    socket.emit("create-room", room)
-    setRoom("")
+      if (data) {
+        setNewChatroom('');
+        setAlert(true);
+      } else {
+        setText(data.message);
+      }
+    }
+    inputRef.current.focus();
   }
 
-  if (!user) {
-    return <Navigate to="/login" />
+  // Delete Chat from Dashboard
+  const deleteChat = async e => {
+    e.preventDefault();
+    setChatrooms(chatrooms.filter(chatroom => chatroom._id !== e.target.id))
+    
+    //Delete from DB
+    const url = 'http://localhost:5000/room';
+    const options = {
+      method: 'DELETE',
+      headers: {
+        Authorization: localStorage.getItem('token'),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: e.target.id })
+    };
+    await fetch(url, options);
+  }
+
+  // In case there's no users registered.
+  if (!isData) {
+    return navigate('/signup');
   }
 
   return (
-    <div>
-      <div className="row">
-        <p>Go ahead and pick a chat room or create a new one!</p>
-        <div className="col s12 m6">
-          <div className="card blue-grey darken-1">
-            <div className="card-content white-text">
-              <span className="card-title">
-                Welcome {user ? user.name : ""}
-              </span>
-              <form onSubmit={handleSubmit}>
-                <div className="row">
-                  <div className="input-field col s12">
-                    <input
-                      id="room"
-                      type="text"
-                      required
-                      className="validate"
-                      value={room}
-                      onChange={(e) => setRoom(e.target.value)}
-                    />
-                    <label htmlFor="room">Enter a room name</label>
-                  </div>
-                </div>
-                <button className="btn">Create Room</button>
-              </form>
-            </div>
-          </div>
+    <form autoComplete="off" onSubmit={ handleSubmit }>
+      <div className='card'>
+        <div className='cardHeader'>create room</div>
+        <div className="form">
+            <input type="text" id="chatName" className='input' autoComplete='off' value={newChatroom} onChange={ handleChange } ref={ inputRef } autoFocus />
+            <label htmlFor="name" className='label'>name</label>  
         </div>
-        <div className="col s6 m5 offset-1">
-          <RoomList rooms={rooms} />
+        <div className='text'>{text}</div>
+        <button className='button'>add</button>
+        <div className="chatrooms">
+          {
+          chatrooms.map(chatroom => <DeleteChat key={ chatroom._id } chatroom={ chatroom } onDelete={ deleteChat } />)
+          }
         </div>
       </div>
-    </div>
+    </form>   
   )
 }
 

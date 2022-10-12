@@ -1,40 +1,55 @@
-import "./App.css"
-import { HashRouter as Router, Routes, Route } from "react-router-dom"
 import React, { useEffect, useState } from "react"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Signup from "./components/Signup"
-import { UserContext } from "./UserContext"
 import Home from "./components/Home"
 import Login from "./components/Login"
 import Chat from "./components/Chat"
+import io from 'socket.io-client'
+
 
 
 function App() {
-  const [user, setUser] = useState(localStorage.getItem("user"))
+  const [socket, setSocket] = useState(null);
 
-  useEffect(() => {
-    const loggedInUser = localStorage.getItem("user")
-    if (loggedInUser) {
-      const foundUser = JSON.parse(loggedInUser)
-      setUser(foundUser)
-    }
-  }, [])
+// Setup sockets.io
+const setupSocket = () => {
+  const token = localStorage.getItem('token');
+  if (token && !socket) {
+    const newSocket = io('http://localhost:5000', {
+      query: {
+        token: localStorage.getItem('token'),
+      },
+    });
+    newSocket.on('disconnect', () => {   
+      setSocket(null);
+      setTimeout(setupSocket, 3000);
+      console.log('Socket disconnected.');
+    });
+    newSocket.on('connection', () => {
+      console.log('Socket connected.');
+    });
+    setSocket(newSocket);
+  };
+};
+
+useEffect(() => {
+  setupSocket();
+  // eslint-disable-next-line
+}, []);
 
   return (
+    <div className="App">
     <Router>
-      <div className="App">
-        <UserContext.Provider value={{ user, setUser }}>
-          <Navbar />
           <Routes>
-            {/* TODO ver por que usa "element" en vez de "component" creo que es una cosa de versiones */}
-            <Route exact path="/" element={<Home />} />
+            <Route exact path="/" element={<Navbar />} />
+            <Route path="/login" element={<Login setupSocket={ setupSocket } />} />
             <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/chat/:room_id/:room_name" element={<Chat />} />
+            <Route path="/home" element={<Home socket={ socket } />} />
+            <Route path="/chat/:id/" element={<Chat socket={ socket } />} />
           </Routes>
-        </UserContext.Provider>
-      </div>
     </Router>
+    </div>
   )
 }
 

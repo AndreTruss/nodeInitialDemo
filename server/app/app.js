@@ -24,6 +24,12 @@ app.use( '/', router );
 // DB initialization
 connectDB();
 
+const PORT = process.env.PORT || 5000;
+
+httpServer.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
+
 // Socket-io
 const io = new Server( httpServer, {
   cors: {
@@ -32,8 +38,3 @@ const io = new Server( httpServer, {
 });
 
 socketio( io );
-
-const PORT = process.env.PORT || 5000;
-httpServer.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
-});

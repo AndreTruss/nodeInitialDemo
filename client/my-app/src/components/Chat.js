@@ -1,64 +1,98 @@
-import React, { useContext, useEffect, useState } from "react"
-import io from "socket.io-client"
-import { useParams, Navigate } from "react-router-dom"
-import { UserContext } from "../UserContext"
-import Input from "./Input"
-import Messages from "./Messages"
-import "./Chat.css"
-import background from "../assets/background-chat.png"
-const API_BASE_URL = 'http://localhost:5000'
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import Messages from './Messages';
 
-let socket
+const Chat = ({ socket }) => {
+  const navigate = useNavigate();
+  const { chatId } = useParams();
+  const inputRef = useRef();
 
-function Chat() {
-  const { user, setUser } = useContext(UserContext)
-  const { room_id } = useParams()
-  const [message, setMessage] = useState("")
-  const [messageLog, setMessageLog] = useState([])
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [chatName, setChatName] = useState('');
 
-  useEffect(() => {
-    socket = io(API_BASE_URL)
+  const handleChange = e => setNewMessage(e.target.value);
 
-    socket.emit("join", { name: user.name, room_id, user_id: user._id })
-  }, [])
-
-  const sendMessage = (e) => {
-    e.preventDefault()
-    if (message) {
-      socket.emit("send-message", message, room_id, () => setMessage(""))
+  const sendMessage = e => {
+    e.preventDefault();
+    if (socket &&  newMessage !== '') {
+      socket.emit('chatMessage', {
+        chatId, 
+        message: newMessage,
+      });
+      setNewMessage('');
+      inputRef.current.focus();
     }
   }
 
-  useEffect(() => {
-    socket.on("new-message", (newMessage) => {
-      setMessageLog((input) => [...input, newMessage])
-    })
-  }, [])
+  useEffect(() => { 
+    if (socket) {
+      socket.on('newMessage', message => {
+        setMessages([...messages, message]);
+      });
+    }
+  }, [messages, socket])
 
   useEffect(() => {
-    socket.emit("message-history", room_id)
-    socket.on("history", (result) => {
-      setMessageLog(result)
-    })
-  }, [])
+    if (socket) socket.emit('join', { chatId });
 
-  if (!user) {
-    return <Navigate to="/login" />
+    return () => {
+      if (socket) socket.emit('leave', { chatId });
+    }
+  }, [socket, chatId]);
+
+  // Get chat name with the ID in params.
+  useEffect(() => {
+    if (socket){
+      const getChatName = async () => {
+      const res = await fetch('http://localhost:5000/room/' + chatId, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      const data = await res.json();
+      if (data.message !== 'Forbidden.') setChatName(data.chat.name)
+      }
+      getChatName();
+    }
+  }, [chatId, socket])
+
+  const logout = () => {
+    localStorage.clear();    
+    navigate('/login');
+  }
+
+  const goBack = () => {
+    navigate('/home');
   }
 
   return (
-    <div className="outerContainer">
-      <div
-        className="container"
-        style={{ backgroundImage: `url(${background})` }}
-      >
-        <Messages messageLog={messageLog} user_id={user._id} />
-        <Input
-          message={message}
-          setMessage={setMessage}
-          sendMessage={sendMessage}
-        />
+    <div className='chat'>
+      <div className='header'>
+        <span onClick={ goBack } className="material-symbols-outlined logout">arrow_back_ios</span>
+        <span onClick={ logout } className="logout material-symbols-outlined">logout</span>
       </div>
+      <div className='chatSection'>
+        <div className="chatHeader">{chatName.toUpperCase()}</div>
+        <div className="chatContent">
+          <div className="chatBox">
+            {
+              messages.map((message, i) => <Messages key={ i } message={ message } />)
+            }
+            <div className="anchor"></div>
+          </div>
+        </div>
+        <form autoComplete="off" onSubmit={ sendMessage }>
+          <div className="chatActions">
+            <div>
+              <input type='text' name='message' value={ newMessage } placeholder='write a message' onChange={ handleChange } ref={ inputRef } autoFocus></input>
+            </div>
+            <div>
+              <button type='submit' className='chatButton'><span className="material-symbols-outlined">send</span></button>
+            </div>
+          </div>
+        </form>
+      </div> 
     </div>
   )
 }

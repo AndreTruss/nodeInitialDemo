@@ -1,6 +1,7 @@
 const mongoose = require( 'mongoose' );
 //const { MONGODB_URI } = require('./config')
-const MONGODB_URI= 'mongodb://localhost:27017/chat-app'
+//const MONGODB_URI= 'mongodb://localhost:27017/chat-app'
+const MONGODB_URI = "mongodb+srv://AndreTruss:bpbUGW0U6Gxl8kOE@cluster0.lnihe.mongodb.net/hackaton?retryWrites=true&w=majority"
 
 const connectDB = async() => {
     try {
