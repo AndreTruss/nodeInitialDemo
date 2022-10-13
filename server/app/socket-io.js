@@ -6,13 +6,13 @@ const socketio = ( io ) => {
     io.on( 'connection', ( socket ) => {
         console.log( 'user connected on socket.id:', socket.id );
 
-        const rooms = Room.find();
-        socket.emit( 'rooms-found', rooms );
+        Room.find({}).then((result) => {
+        socket.emit( 'rooms-found', result )});
         
         socket.on( 'create-room', ( name ) => {
             const room = new Room({ name });
-            room.save();
-            io.emit( 'room-created', room );
+            room.save().then((result) => {
+            io.emit( 'room-created', result )});
         });
 
         socket.on( 'join', ({ name, room_id, user_id }) => {
@@ -27,7 +27,7 @@ const socketio = ( io ) => {
 
         socket.on( 'send-message', ( message, room_id ) => {
             const getUser = users.find( (user) => user.socket_id === socket.id );
-
+console.log(getUser, users)
             const newMessage = new Message( getUser.name, getUser.user_id, room_id, message );
             newMessage.save();
 
@@ -35,8 +35,8 @@ const socketio = ( io ) => {
         });
 
         socket.on( 'message-history', ( room_id ) => {
-            const messages = Message.find({ room_id });
-            socket.emit( 'history', messages );
+            Message.find({ room_id }).then((result) => {
+            socket.emit( 'history', result )});
         });
 
         socket.on( 'disconnect', () => {
