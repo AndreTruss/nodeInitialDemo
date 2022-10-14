@@ -30,7 +30,7 @@ function App() {
             <Route exact path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/chat/:room_id/:room_name" element={<Chat />} />
+            <Route path="/chat/:room_id" element={<Chat />} />
           </Routes>
         </UserContext.Provider>
       </div>

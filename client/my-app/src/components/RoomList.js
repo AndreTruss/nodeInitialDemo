@@ -7,7 +7,7 @@ function RoomList({ rooms }) {
     <div>
       {rooms &&
         rooms.map((room) => (
-          <Link to={`/chat/${room._id}/${room.name}`} key={room._id}>
+          <Link to={`/chat/${room._id}`} key={room._id}>
             <Room name={room.name} />
           </Link>
         ))}

@@ -1,6 +1,7 @@
 const Room = require( './models/room' );
 const Message = require( './models/message' );
-const users = [];
+const { addUser, getUser, removeUser } = require('./helpers/socket_helper');
+
 
 const socketio = ( io ) => {
     io.on( 'connection', ( socket ) => {
@@ -16,22 +17,23 @@ const socketio = ( io ) => {
         });
 
         socket.on( 'join', ({ name, room_id, user_id }) => {
-            const findUser = users.find( (user) => user.room_id === room_id && user.user_id === user_id );
-            if ( findUser ){ return 'User is already in the room' };
-
-            const newUser = { socket_id: socket.id, name, user_id, room_id };
-            users.push( newUser );
-
+            const { error, newuser } = addUser(socket.id, name, room_id, user_id);
             socket.join( room_id );
+            if (error) { 
+                console.log( 'error:', error )
+                } else { 
+                console.log( 'user joined:', newuser )
+            }
         });
 
-        socket.on( 'send-message', ( message, room_id ) => {
-            const getUser = users.find( (user) => user.socket_id === socket.id );
-console.log(getUser, users)
-            const newMessage = new Message( getUser.name, getUser.user_id, room_id, message );
+        socket.on( 'send-message', ( message, room_id, setMessage ) => {
+            const finduser = getUser( socket.id );
+console.log( finduser, message)
+            const newMessage = new Message({ name: finduser.name, user_id: finduser.user_id, room_id, text: message });
             newMessage.save();
 
             io.to( room_id ).emit( 'new-message', newMessage );
+            setMessage()
         });
 
         socket.on( 'message-history', ( room_id ) => {
@@ -40,8 +42,7 @@ console.log(getUser, users)
         });
 
         socket.on( 'disconnect', () => {
-            const index = users.findIndex( (user) => user.socket_id === socket.id );
-            users.splice( index, 1 );
+            removeUser( socket.id );
         });
     });
     }
