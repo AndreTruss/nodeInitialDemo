@@ -19,13 +19,13 @@ function Chat() {
   useEffect(() => {
     socket = io(API_BASE_URL)
 
-    socket.emit("join", { name: user.name, room_id, user_id: user._id })
+    socket.emit("join", user.name, room_id, user._id )
   }, [])
 
   const sendMessage = (e) => {
     e.preventDefault()
     if (message) {
-      socket.emit("send-message", message, room_id, () => setMessage(""))
+      socket.emit("send-message", user.name, user._id, message, room_id, () => setMessage(""))
     }
   }
 
