@@ -26,7 +26,6 @@ function App() {
         <UserContext.Provider value={{ user, setUser }}>
           <Navbar />
           <Routes>
-            {/* TODO ver por que usa "element" en vez de "component" creo que es una cosa de versiones */}
             <Route exact path="/" element={<Home />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />

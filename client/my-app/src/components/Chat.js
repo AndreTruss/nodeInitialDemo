@@ -17,9 +17,12 @@ function Chat() {
   const [messageLog, setMessageLog] = useState([])
 
   useEffect(() => {
-    socket = io(API_BASE_URL)
+    socket = io.connect(API_BASE_URL)
 
-    socket.emit("join", user.name, room_id, user._id )
+    if (socket) socket.emit("join", user.name, room_id, user._id )
+    return () => {
+      if (socket) socket.emit('leaveRoom', room_id, user._id);
+    }
   }, [])
 
   const sendMessage = (e) => {
