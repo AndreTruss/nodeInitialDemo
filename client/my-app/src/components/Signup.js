@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
-const Signup = () => {
+const Signup = ( props ) => {
   const navigate = useNavigate();
   const [text, setText] = useState(' ');
   const [values, setValues] = useState({name: '', password: ''});
@@ -32,7 +32,12 @@ const Signup = () => {
     const res = await fetch(url, options);
     const data = await res.json();
 
-    if (data) navigate('/login');
+    if (data) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', data.user.name)
+      props.setupSocket();
+      navigate('/home');
+    }
     setText(data.message);
   }
 

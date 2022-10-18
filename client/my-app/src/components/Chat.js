@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Messages from './Messages';
 
 const Chat = ({ socket }) => {
   const navigate = useNavigate();
   const { room_id } = useParams();
-  const inputRef = useRef();
+  // const inputRef = useRef();
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
@@ -21,7 +21,7 @@ const Chat = ({ socket }) => {
         message: newMessage,
       });
       setNewMessage('');
-      inputRef.current.focus();
+      // inputRef.current.focus();
     }
   }
 
@@ -41,6 +41,15 @@ const Chat = ({ socket }) => {
     }
   }, [socket, room_id]);
 
+  useEffect(() => {
+    if (socket){
+      socket.emit("get-message-history", room_id)
+      socket.on("message-history", (result) => {
+        setMessages(result)
+      })
+    }
+  }, [room_id, socket])
+
   // Get chat name with the ID in params.
   useEffect(() => {
     if (socket){
@@ -51,7 +60,7 @@ const Chat = ({ socket }) => {
         },
       });
       const data = await res.json();
-      if (data.message !== 'Forbidden.') setChatName(data.room.name)
+      if (data.message !== 'Not authorized') setChatName(data.room.name)
       }
       getChatName();
     }
@@ -69,7 +78,7 @@ const Chat = ({ socket }) => {
   return (
     <div className='chat'>
       <div className='header'>
-        <span onClick={ goBack } className="material-symbols-outlined logout">arrow_back_ios</span>
+        <span onClick={ goBack } className="material-symbols-outlined logout">back</span>
         <span onClick={ logout } className="logout material-symbols-outlined">logout</span>
       </div>
       <div className='chatSection'>
@@ -85,7 +94,7 @@ const Chat = ({ socket }) => {
         <form autoComplete="off" onSubmit={ sendMessage }>
           <div className="chatActions">
             <div>
-              <input type='text' name='message' value={ newMessage } placeholder='write a message' onChange={ handleChange } ref={ inputRef } autoFocus></input>
+              <input type='text' name='message' value={ newMessage } placeholder='write a message' onChange={ handleChange } ></input>
             </div>
             <div>
               <button type='submit' className='chatButton'><span className="material-symbols-outlined logout">send</span></button>

@@ -8,8 +8,8 @@ const Home = ({ socket }) => {
   const [chatrooms, setChatrooms] = useState([]);
   const [newChatroom, setNewChatroom] = useState([]);
   const [text, setText] = useState('');
+  const [user, setUser] = useState(localStorage.getItem('user'));
   const [alert, setAlert] = useState(true);
-  const [isData, setIsData] = useState(true);
   const inputRef = useRef();
 
   // Get all the chats rooms
@@ -27,7 +27,8 @@ const Home = ({ socket }) => {
         const res = await fetch(url, options );
         const data = await res.json();
         //console.log(data)
-        if (data.message === 'Forbidden.') setIsData(false);
+        if (data.message === 'Not authorized') setUser(null)
+          
         setChatrooms(data);
       };
       getChatrooms();
@@ -54,7 +55,7 @@ const Home = ({ socket }) => {
       console.log(res)
       const data = await res.json();
 
-      if (data.status) {
+      if (data) {
         setNewChatroom('');
         setAlert(true);
       } else {
@@ -83,13 +84,14 @@ const Home = ({ socket }) => {
   }
 
   // In case there's no users registered.
-  if (!isData) {
+  if (!user) {
     return navigate('/signup');
   }
 
   return (
     <form autoComplete="off" onSubmit={ handleSubmit }>
       <div className='card'>
+        <div className='cardHeader'>Welcome {user} </div>
         <div className='cardHeader'>create room</div>
         <div className="form">
             <input type="text" id="chatName" className='input' autoComplete='off' value={newChatroom} onChange={ handleChange } ref={ inputRef } autoFocus />

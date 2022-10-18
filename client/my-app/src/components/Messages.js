@@ -12,8 +12,8 @@ const Messages = ({ message }) => {
     }
   }, []);
   return (
-    <div className={ userId === message.userId ? 'ownMessage' : 'otherMessage' }>
-      <span className='userName'>{ userId !== message.userId ? message.name + ': ' : null }</span>
+    <div className={ userId === message.user_id ? 'ownMessage' : 'otherMessage' }>
+      <span className='userName'>{message.user_name + ': '}</span>
       <span className='message'>{message.message}</span>
     </div> 
   )

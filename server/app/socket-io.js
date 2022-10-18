@@ -10,6 +10,7 @@ function socketio( io ){
             const token = socket.handshake.query.token;
             const payload = await jwt.verify(token, 'process.env.SECRET');        
             socket.id = payload.id;
+            // console.log(payload, socket.id)
             next();
         } catch (err) {
             console.log(err);
@@ -35,13 +36,18 @@ function socketio( io ){
     
         socket.on('chatMessage', async ({ room_id, message }) => {
             const user = await User.findOne({ _id: socket.id })
-            const newMessage = new Message({ room_id, user_id: socket.id, message });
+            const newMessage = new Message({ room_id, user_id: socket.id, message, user_name: user.name });
             io.to(room_id).emit('newMessage', { 
                 message,
-                name: user.name,
+                user_name: user.name,
                 user_id: socket.id,
             });
             await newMessage.save();
+        });
+
+        socket.on('get-message-history', async (room_id) => {
+            const findMessages = await Message.find({ room_id })
+            socket.emit('message-history', findMessages);
         });
     });
     }
