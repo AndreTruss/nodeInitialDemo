@@ -24,14 +24,17 @@ function socketio( io ){
             console.log("Disconnected:", socket.id);
         });
     
-        socket.on('join', ({ room_id }) => {
+        socket.on('join', async ({ room_id }) => {
             socket.join( room_id );
-            console.log('A user join chat:', room_id);
+            const user = await User.findOne({ _id: socket.id })
+            io.to(room_id).emit('userOnChat', user.name )
+            console.log(user.name, 'join chat:', room_id);
         });
-    
-        socket.on('leave', ({ room_id }) => {
+        
+        socket.on('leave', async ({ room_id }) => {
             socket.leave( room_id );
-            console.log('A user leave chat:', room_id);
+            const user = await User.findOne({ _id: socket.id })
+            console.log(user.name, 'leave chat:', room_id);
         });
     
         socket.on('chatMessage', async ({ room_id, message }) => {

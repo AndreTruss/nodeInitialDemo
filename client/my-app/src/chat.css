@@ -20,6 +20,15 @@
   transform: translate(-50%, -50%);
 }
 
+.chatUser {
+  width: 60vw;
+  height: 8vh;
+  margin: auto;
+  border: 2px solid var(--light-color);
+  position: relative;
+  border-radius: 0.4rem;
+} 
+
 .chatSection {
   width: 60vw;
   height: 70vh;
@@ -37,7 +46,7 @@
   padding: 0 0.3rem;
   color: var(--light-color);
   cursor: text;
-  top: -1.8rem;
+  top: -1rem;
   left: 0.8rem;
   font-size: 1.1em;
 }
@@ -131,7 +140,7 @@ input:focus {
   display: flex;
   justify-content: space-between;
   font-size: 0.5em;
-  cursor: pointer;
+  /* cursor: pointer; */
   margin-right: 5px;
   color: var(--light-color);
 }
