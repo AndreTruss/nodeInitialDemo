@@ -41,7 +41,7 @@ const setupSocket = () => {
 }, []); */
 
   return (
-    <div className="App" id="dark">
+    <div className="App" id="color">
     <Router>
           <Routes>
             <Route exact path="/" element={<Navbar />} />

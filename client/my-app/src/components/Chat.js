@@ -82,6 +82,7 @@ const Chat = ({ socket }) => {
   }
 
   return (
+    <div className='card'>
     <div className='chat'>
       <div className='header'>
         <span onClick={ goBack } className="material-symbols-outlined logout">back</span>
@@ -112,6 +113,7 @@ const Chat = ({ socket }) => {
           </div>
         </form>
       </div> 
+    </div>
     </div>
   )
 }

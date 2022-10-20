@@ -8,7 +8,7 @@ const Home = ({ socket }) => {
   const [chatrooms, setChatrooms] = useState([]);
   const [newChatroom, setNewChatroom] = useState([]);
   const [text, setText] = useState('');
-  const [user, setUser] = useState(localStorage.getItem('user'));
+  const user = localStorage.getItem('user');
   const [alert, setAlert] = useState(true);
   // const inputRef = useRef();
 
@@ -27,7 +27,7 @@ const Home = ({ socket }) => {
         const res = await fetch(url, options );
         const data = await res.json();
         console.log(data)
-        if (data.message === 'Not authorized') setUser(null)
+        // if (data.message === 'Not authorized') setUser(null)
           
         setChatrooms(data);
       };
@@ -52,8 +52,8 @@ const Home = ({ socket }) => {
         body: JSON.stringify( { name: newChatroom } )
       };
       const res = await fetch(url, options);
-      console.log(res)
       const data = await res.json();
+      console.log(data)
 
       if (data.status) {
         setNewChatroom('');

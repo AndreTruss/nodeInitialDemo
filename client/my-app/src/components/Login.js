@@ -32,13 +32,14 @@ const Login = ( props ) => {
     const res = await fetch(url, options);
     const data = await res.json();
 
-    if (data) {
+    if (data.status) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', data.user.name);
       props.setupSocket();
       navigate('/home');
-    }
+    } else {
     setText(data.message);
+    }
   }
 
   return (
