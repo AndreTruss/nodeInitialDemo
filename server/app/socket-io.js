@@ -27,7 +27,7 @@ function socketio( io ){
         socket.on('join', async ({ room_id }) => {
             socket.join( room_id );
             const user = await User.findOne({ _id: socket.id })
-            io.to(room_id).emit('userOnChat', user.name )
+            io.in(room_id).emit('userOnChat', user.name )
             console.log(user.name, 'join chat:', room_id);
         });
         

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from "react-router-dom";
 import DeleteChat from './DeleteChat';
 
@@ -10,7 +10,7 @@ const Home = ({ socket }) => {
   const [text, setText] = useState('');
   const [user, setUser] = useState(localStorage.getItem('user'));
   const [alert, setAlert] = useState(true);
-  const inputRef = useRef();
+  // const inputRef = useRef();
 
   // Get all the chats rooms
   useEffect(() => {
@@ -26,7 +26,7 @@ const Home = ({ socket }) => {
         };
         const res = await fetch(url, options );
         const data = await res.json();
-        //console.log(data)
+        console.log(data)
         if (data.message === 'Not authorized') setUser(null)
           
         setChatrooms(data);
@@ -41,7 +41,7 @@ const Home = ({ socket }) => {
 
   const handleSubmit = async e => {
     e.preventDefault(); 
-    if (newChatroom !== ''){
+    
       setText('');
       const options = {
         method: 'POST',
@@ -55,14 +55,14 @@ const Home = ({ socket }) => {
       console.log(res)
       const data = await res.json();
 
-      if (data) {
+      if (data.status) {
         setNewChatroom('');
         setAlert(true);
       } else {
         setText(data.message);
       }
-    }
-    inputRef.current.focus();
+    
+    //inputRef.current.focus();
   }
 
   // Delete Chat from Dashboard
@@ -92,13 +92,12 @@ const Home = ({ socket }) => {
     <form autoComplete="off" onSubmit={ handleSubmit }>
       <div className='card'>
         <div className='cardHeader'>Welcome {user} </div>
-        <div className='cardHeader'>create room</div>
         <div className="form">
-            <input type="text" id="chatName" className='input' autoComplete='off' value={newChatroom} onChange={ handleChange } ref={ inputRef } autoFocus />
-            <label htmlFor="name" className='label'>name</label>  
+            <input type="text" id="chatName" className='input' placeholder='Chat room name' value={newChatroom} onChange={ handleChange } />
+            {/* <label htmlFor="name" className='label'>name</label> */}  
         </div>
         <div className='text'>{text}</div>
-        <button className='button'>add</button>
+        <button className='button'>create room</button>
         <div className="chatrooms">
           {
           chatrooms.map(chatroom => <DeleteChat key={ chatroom._id } chatroom={ chatroom } onDelete={ deleteChat } />)

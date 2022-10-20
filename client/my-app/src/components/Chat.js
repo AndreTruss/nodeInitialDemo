@@ -10,7 +10,7 @@ const Chat = ({ socket }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [chatName, setChatName] = useState('');
-  const [user, setUser] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const handleChange = e => setNewMessage(e.target.value);
 
@@ -37,8 +37,8 @@ const Chat = ({ socket }) => {
   useEffect(() => {
     if (socket){ 
       socket.emit('join', { room_id })
-      socket.on('userOnChat', (result) => {
-        setUser( [...user, `${result} `] )
+      socket.on('userOnChat', (user) => {
+        setUsers( [...users, user] )
       })
     }
     return () => {
@@ -89,7 +89,7 @@ const Chat = ({ socket }) => {
       </div>
       <div className='chatUser'>
         <span className='chatHeader'>Users on Chat:</span>
-        <span className='message'>{user}</span>
+        <span className='message'>{users}</span>
         </div>
       <div className='chatSection'>
         <div className="chatHeader">{chatName.toUpperCase()}</div>
