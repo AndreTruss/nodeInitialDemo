@@ -35,7 +35,7 @@ const Signup = ( props ) => {
     if (data.status) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', data.user.name)
-      props.setupSocket();
+      props.connectSocket();
       navigate('/home');
     }
     setText(data.message);

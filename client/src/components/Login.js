@@ -35,7 +35,7 @@ const Login = ( props ) => {
     if (data.status) {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', data.user.name);
-      props.setupSocket();
+      await props.connectSocket();
       navigate('/home');
     } else {
     setText(data.message);

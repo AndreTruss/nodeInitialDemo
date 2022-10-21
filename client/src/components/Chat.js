@@ -38,12 +38,20 @@ const Chat = ({ socket }) => {
   useEffect(() => {
     if (socket){ 
       socket.emit('join', { room_id })
-      socket.on('userOnChat', (user) => {
-        setUsers( [...users, user] )
+      socket.on('userOnChat', (user_name) => {
+        setUsers( [...users, user_name] )
       })
+      console.log(users)
     }
     return () => {
-      if (socket) socket.emit('leave', { room_id });
+      if (socket){ 
+        socket.emit('leave', { room_id })
+        // setUsers([])
+        socket.on('userOffChat', (result) => {
+          setUsers( [...result] )
+        })
+        console.log( users )
+    }
     }
   }, [socket, room_id]);
   
@@ -67,7 +75,8 @@ const Chat = ({ socket }) => {
         },
       });
       const data = await res.json();
-      if (data.message !== 'Not authorized') setChatName(data.room.name)
+      // console.log(data)
+      if (data.status) setChatName(data.room.name)
       }
       getChatName();
     }
@@ -75,7 +84,10 @@ const Chat = ({ socket }) => {
 
   const logout = () => {
     localStorage.clear();    
+    setUsers([]);
     navigate('/login');
+    socket.disconnect();
+    // socket.off()
   }
 
   const goBack = () => {

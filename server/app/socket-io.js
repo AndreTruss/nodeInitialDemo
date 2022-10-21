@@ -2,6 +2,7 @@ const User = require( './models/user' );
 const Message = require( './models/message' );
 require('./models/room');
 const jwt = require('jsonwebtoken');
+let users = [];
 
 function socketio( io ){
     
@@ -19,22 +20,32 @@ function socketio( io ){
 
     io.on( 'connection', ( socket ) => {
         console.log( 'user connected on socket.id:', socket.id );
-
+        
         socket.on('disconnect', () => {
+            users = [];
             console.log("Disconnected:", socket.id);
         });
     
         socket.on('join', async ({ room_id }) => {
             socket.join( room_id );
             const user = await User.findOne({ _id: socket.id })
-            io.in(room_id).emit('userOnChat', user.name )
+            users.push( ` ${user.name} ` )
+            io.in(room_id).emit('userOnChat', users )
             console.log(user.name, 'join chat:', room_id);
+            console.log(users)
         });
         
         socket.on('leave', async ({ room_id }) => {
-            socket.leave( room_id );
             const user = await User.findOne({ _id: socket.id })
+            // console.log(socket.id, user.name, users)
+            const index = users.findIndex( (el) => el == ` ${user.name} `)
+            // console.log(index)
+            users.splice( index, 1 );
+            io.in(room_id).emit('userOffChat', users )
             console.log(user.name, 'leave chat:', room_id);
+            console.log(users)
+
+            socket.leave( room_id );
         });
     
         socket.on('chatMessage', async ({ room_id, message }) => {

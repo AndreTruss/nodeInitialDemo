@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { HashRouter as Router, Routes, Route } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Signup from "./components/Signup"
 import Home from "./components/Home"
@@ -13,19 +13,19 @@ function App() {
   const [socket, setSocket] = useState(null);
 
 // Setup sockets.io
-const setupSocket = () => {
+const connectSocket = () => {
   const token = localStorage.getItem('token');
 
   if (token && !socket) {
     const newSocket = io('http://localhost:5000', {
       query: {
         token: localStorage.getItem('token'),
-      }, forceNew: true 
+      } 
     });
 
     /* newSocket.on('disconnect', () => {   
       setSocket(null);
-      setTimeout(setupSocket, 3000);
+      setTimeout(connectSocket, 3000);
       console.log('Socket disconnected.');
     });
     newSocket.on('connection', () => {
@@ -36,17 +36,21 @@ const setupSocket = () => {
 };
 
 /* useEffect(() => {
-  setupSocket();
-  // eslint-disable-next-line
-}, []); */
+  connectSocket();
+  return () => {
+      socket.disconnect()
+      socket.off()
+    }
+  }, []) */
+
 
   return (
     <div className="App" id="color">
     <Router>
           <Routes>
             <Route exact path="/" element={<Navbar />} />
-            <Route path="/login" element={<Login setupSocket={ setupSocket } />} />
-            <Route path="/signup" element={<Signup setupSocket={ setupSocket } />} />
+            <Route path="/login" element={<Login connectSocket={ connectSocket } />} />
+            <Route path="/signup" element={<Signup connectSocket={ connectSocket } />} />
             <Route path="/home" element={<Home socket={ socket } />} />
             <Route path="/chat/:room_id/" element={<Chat socket={ socket } />} />
           </Routes>

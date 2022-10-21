@@ -1,14 +1,15 @@
 const express = require('express');
 const cors = require('cors');
-const http = require('http');
-const { Server } = require('socket.io');
+// const http = require('http');
+// const { Server } = require('socket.io');
 const router = require('./routes/route');
 const { connectDB } = require('./config/db');
 const  CORS_URL  = 'http://localhost:3000';
 const { socketio} = require('./socket-io')
 
 const app = express();
-const httpServer = http.createServer( app );
+// const httpServer = http.createServer( app );
+const httpServer = require('http').Server( app )
 
 app.use( cors( {
     origin: CORS_URL,
@@ -26,7 +27,8 @@ connectDB();
 
 
 // Socket-io
-const io = new Server( httpServer, {
+// const io = new Server( httpServer, {
+const io = require('socket.io')( httpServer, {
   cors: {
     origin: CORS_URL,
   },

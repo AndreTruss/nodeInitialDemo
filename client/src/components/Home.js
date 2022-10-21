@@ -26,7 +26,7 @@ const Home = ({ socket }) => {
         };
         const res = await fetch(url, options );
         const data = await res.json();
-        console.log(data)
+        // console.log(data)
         // if (data.message === 'Not authorized') setUser(null)
           
         setChatrooms(data);
@@ -92,19 +92,19 @@ const Home = ({ socket }) => {
     <form autoComplete="off" onSubmit={ handleSubmit }>
       <div className='card'>
         <div className='cardHeader'>Welcome {user} </div>
-        <div className="chatShadow">
-        <div className="form">
-            <input type="text" id="chatName" className='input' placeholder='Chat room name' value={newChatroom} onChange={ handleChange } />
-            {/* <label htmlFor="name" className='label'>name</label> */}  
-        </div>
-        <div className='text'>{text}</div>
-        <button className='button'>create room</button>
-        </div>
         <div className="chatrooms">
-        <div className='cardHeader'>Join rooms:</div>
+          <div className='cardHeader2'>Join chats:</div>
           {
           chatrooms.map(chatroom => <DeleteChat key={ chatroom._id } chatroom={ chatroom } onDelete={ deleteChat } />)
           }
+        </div>
+        <div className="chatShadow">
+          <div className="form">
+            <input type="text" id="chatName" className='input' placeholder='New chat-room name' value={newChatroom} onChange={ handleChange } />
+            {/* <label htmlFor="name" className='label'>name</label> */}  
+          </div>
+          <div className='text'>{text}</div>
+          <button className='button'>create chat</button>
         </div>
       </div>
     </form>   

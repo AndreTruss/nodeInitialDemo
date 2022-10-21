@@ -86,7 +86,7 @@ const getOneRoom = async (req, res) => {
 
     (!findRoom)
     ? res.status(400).json({ status: false, message: `No Room with this ID.` }) 
-    : res.status(200).json({ room: findRoom})
+    : res.status(200).json({ status: true, room: findRoom})
 }
 
 const deleteRoom = async (req, res) => {    
