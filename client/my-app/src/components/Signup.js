@@ -46,12 +46,12 @@ const Signup = ( props ) => {
       <div className='card'>
           <div className='cardHeader'>sign in</div>
           <div className="form">
-              <input type="text" className='input' name="name" onChange={ handleChange } autoFocus />
-              <label htmlFor="name" className='label'>name</label>  
+              <input type="text" className='input' placeholder="name" name="name" onChange={ handleChange } autoFocus />
+              {/* <label htmlFor="name" className='label'>name</label>   */}
           </div>
           <div className="form">
-              <input type="password"  className='input' name="password" onChange={ handleChange } />
-              <label htmlFor="password" className='label'>password</label>  
+              <input type="password"  className='input' placeholder="password" name="password" onChange={ handleChange } />
+              {/* <label htmlFor="password" className='label'>password</label>   */}
           </div>
           <div className='text'>{ text }</div>
           <button className='button'>enter</button>

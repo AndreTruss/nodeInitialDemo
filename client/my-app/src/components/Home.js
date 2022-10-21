@@ -92,13 +92,16 @@ const Home = ({ socket }) => {
     <form autoComplete="off" onSubmit={ handleSubmit }>
       <div className='card'>
         <div className='cardHeader'>Welcome {user} </div>
+        <div className="chatShadow">
         <div className="form">
             <input type="text" id="chatName" className='input' placeholder='Chat room name' value={newChatroom} onChange={ handleChange } />
             {/* <label htmlFor="name" className='label'>name</label> */}  
         </div>
         <div className='text'>{text}</div>
         <button className='button'>create room</button>
+        </div>
         <div className="chatrooms">
+        <div className='cardHeader'>Join rooms:</div>
           {
           chatrooms.map(chatroom => <DeleteChat key={ chatroom._id } chatroom={ chatroom } onDelete={ deleteChat } />)
           }

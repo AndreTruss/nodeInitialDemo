@@ -85,15 +85,17 @@ const Chat = ({ socket }) => {
     <div className='card'>
     <div className='chat'>
       <div className='header'>
-        <span onClick={ goBack } className="material-symbols-outlined logout">back</span>
-        <span onClick={ logout } className="logout material-symbols-outlined">logout</span>
+        <span onClick={ goBack } className="logout">back</span>
+        <span onClick={ logout } className="logout">logout</span>
       </div>
-      <div className='chatUser'>
+      {/* <div className='chatUser'>
+      <div className=''>
         <span className='chatHeader'>Users on Chat:</span>
         <span className='message'>{users}</span>
-        </div>
+      </div>
+      </div> */}
+        <div className="cardHeader">{chatName.toUpperCase()}</div>
       <div className='chatSection'>
-        <div className="chatHeader">{chatName.toUpperCase()}</div>
         <div className="chatContent">
           <div className="chatBox">
             {
@@ -108,7 +110,7 @@ const Chat = ({ socket }) => {
               <input type='text' name='message' value={ newMessage } placeholder='write a message' onChange={ handleChange } ></input>
             </div>
             <div>
-              <button type='submit' className='chatButton'><span className="material-symbols-outlined logout">send</span></button>
+              <button type='submit' className='chatButton'><span className="send">send</span></button>
             </div>
           </div>
         </form>
