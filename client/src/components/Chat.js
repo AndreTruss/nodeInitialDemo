@@ -89,12 +89,12 @@ const Chat = ({ socket }) => {
         <span onClick={ goBack } className="logout">back</span>
         <span onClick={ logout } className="logout">logout</span>
       </div>
-      {/* <div className='chatUser'>
+      <div className='chatUser'>
       <div className=''>
         <span className='chatHeader'>Users on Chat:</span>
         <span className='message'>{users}</span>
       </div>
-      </div> */}
+      </div>
         <div className="cardHeader">{chatName.toUpperCase()}</div>
       <div className='chatSection'>
         <div className="chatContent">

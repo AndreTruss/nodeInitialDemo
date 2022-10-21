@@ -9,7 +9,8 @@
   /* flex-direction: column; */
   /* align-items: center; */
   justify-content: center;
-  height: 525px;
+  /* height: 525px; */
+  height: 600px;
   width: 312px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   border-radius: 4px;
@@ -24,10 +25,11 @@
 .chatUser {
   width: 272px;
   height: 50px;
-  /* margin: auto; */
+  margin-bottom: 0px;
   border: 2px solid var(--primary-color);
   position: relative;
   border-radius: 4px;
+  background: var(--bckChat-color);
 } 
 
 .chatSection {
@@ -42,7 +44,6 @@
 
 .chatHeader {
   font-family: var(--font-1);
-  background-color: var(--gray-color);
   position: relative;
   /* left: 1rem;
   top: 0.8rem; */
@@ -51,7 +52,7 @@
   /* cursor: text;
   top: -1rem;
   left: 0.8rem; */
-  font-size: 1.1em;
+  font-size: 1em;
 }
 
 .chatContent {
