@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import STB from "react-scroll-to-bottom"
 import Messages from './Messages';
 
 const Chat = ({ socket }) => {
@@ -97,12 +98,12 @@ const Chat = ({ socket }) => {
         <div className="cardHeader">{chatName.toUpperCase()}</div>
       <div className='chatSection'>
         <div className="chatContent">
-          <div className="chatBox">
+          <STB className="messages">
             {
               messages.map((message, i) => <Messages key={ i } message={ message } />)
             }
-            <div className="anchor"></div>
-          </div>
+            {/* <div className="anchor"></div> */}
+          </STB>
         </div>
         <form autoComplete="off" onSubmit={ sendMessage }>
           <div className="chatActions">

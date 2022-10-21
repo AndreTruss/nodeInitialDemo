@@ -50,9 +50,12 @@ body {
 .cardHeader {
     background: var(--green-color);
     color: var(--gray-color);
-    padding: 0.25rem 0.5rem;
-    border-radius: 5px;
-    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.25rem;
+    border-radius: 4px;
+    margin-bottom: 10px;
     text-transform: uppercase;
     font-size: 1.2em;
     font-weight: bold;
@@ -119,14 +122,14 @@ body {
     width: 100%;
     text-transform: uppercase;
     cursor: pointer;
-    margin-top: 0px;
+    margin-top: 10px;
 }
 
 .span {
-    font-size: 0.5em;
+    font-size: 0.6em;
     cursor: pointer;
     position: relative;
-    left: 42%;
+    left: 44%;
 }
 
 .button:hover,
