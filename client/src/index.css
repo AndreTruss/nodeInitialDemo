@@ -47,9 +47,9 @@ body {
     transform: translate(-50%, -50%); */
 }
 
-.cardHeader {
-    background: var(--bckChat-color);
-    color: var(--green-color);
+.cardHeader1 {
+    background: var(--green-color);
+    color: var(--gray-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -59,11 +59,27 @@ body {
     text-transform: uppercase;
     font-size: 1.2em;
     font-weight: bold;
-    text-align: center;
+    /* text-align: center; */
     border: 2px solid var(--primary-color);
 }
 
 .cardHeader2 {
+    background: var(--green-color);
+    color: var(--gray-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.25rem;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    font-size: 1.2em;
+    font-weight: bold;
+    /* text-align: left; */
+    border: 2px solid var(--gray-color);
+}
+
+.cardHeader3 {
     background: var(--bckChat-color);
     color: var(--primary-color);
     display: flex;

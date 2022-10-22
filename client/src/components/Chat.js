@@ -17,7 +17,7 @@ const Chat = ({ socket }) => {
 
   const sendMessage = e => {
     e.preventDefault();
-    if (socket &&  newMessage !== '') {
+    if ( newMessage !== '' ) {
       socket.emit('chatMessage', {
         room_id, 
         message: newMessage,
@@ -28,46 +28,38 @@ const Chat = ({ socket }) => {
   }
 
   useEffect(() => { 
-    if (socket) {
       socket.on('newMessage', message => {
         setMessages([...messages, message]);
       });
-    }
   }, [messages, socket])
 
   useEffect(() => {
-    if (socket){ 
       socket.emit('join', { room_id })
       socket.on('userOnChat', (user_name) => {
         setUsers( [...users, user_name] )
-      })
-      console.log(users)
-    }
+        console.log(users)
+      });
+
     return () => {
-      if (socket){ 
         socket.emit('leave', { room_id })
         // setUsers([])
         socket.on('userOffChat', (result) => {
           setUsers( [...result] )
+          console.log( users )
         })
-        console.log( users )
-    }
     }
   }, [socket, room_id]);
   
 
   useEffect(() => {
-    if (socket){
       socket.emit("get-message-history", room_id)
       socket.on("message-history", (result) => {
         setMessages(result)
       })
-    }
   }, [room_id, socket])
 
   // Get chat name with the ID in params.
   useEffect(() => {
-    if (socket){
       const getChatName = async () => {
       const res = await fetch('http://localhost:5000/room/' + room_id, {
         headers: {
@@ -79,14 +71,12 @@ const Chat = ({ socket }) => {
       if (data.status) setChatName(data.room.name)
       }
       getChatName();
-    }
   }, [room_id, socket])
 
   const logout = () => {
     localStorage.clear();    
-    setUsers([]);
     navigate('/login');
-    socket.disconnect();
+    // socket.disconnect();
     // socket.off()
   }
 
@@ -107,7 +97,7 @@ const Chat = ({ socket }) => {
         <span className='message'>{users}</span>
       </div>
       </div>
-        <div className="cardHeader">{chatName.toUpperCase()}</div>
+        <div className="cardHeader1">{chatName.toUpperCase()}</div>
       <div className='chatSection'>
         <div className="chatContent">
           <STB className="messages">

@@ -91,9 +91,9 @@ const Home = ({ socket }) => {
   return (
     <form autoComplete="off" onSubmit={ handleSubmit }>
       <div className='card'>
-        <div className='cardHeader'>Welcome {user} </div>
+        <div className='cardHeader2'>Welcome {user} </div>
         <div className="chatrooms">
-          <div className='cardHeader2'>Join chats:</div>
+          <div className='cardHeader3'>Join chats:</div>
           {
           chatrooms.map(chatroom => <DeleteChat key={ chatroom._id } chatroom={ chatroom } onDelete={ deleteChat } />)
           }
