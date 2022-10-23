@@ -40,7 +40,9 @@ const Chat = ({ socket }) => {
     // function joinLeave(){
       socket.emit('join', { room_id })
       socket.on('userOnChat', (user_name) => {
-        setUsers( [...users, user_name] )
+        // console.log(user_name)
+        users.push(user_name)
+        setUsers(users);
       });
       console.log(users)
     // }
@@ -96,8 +98,10 @@ const Chat = ({ socket }) => {
 
   const goBack = () => {
     socket.emit('leave', { room_id })
-        socket.on('userOffChat', (array) => {
-          setUsers( array )
+        socket.on('userOffChat', (user_name) => {
+          // console.log(user_name)
+          users.splice( user_name, 1 )
+          setUsers(users)
         })
         console.log( users )
     navigate('/home');
