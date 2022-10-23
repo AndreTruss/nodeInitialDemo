@@ -45,7 +45,7 @@ const Login = ( props ) => {
   return (
     <form autoComplete="off" onSubmit={ handleSubmit }>
         <div className='card'>
-            <div className='cardHeader'>Log in</div>
+            <div className='cardHeader1'>Log in</div>
             <div className="form">
                 <input type="name" className='input' placeholder="name" name="name" onChange={ handleChange} />
                 {/* <label htmlFor="name" className='label'>name</label>   */}

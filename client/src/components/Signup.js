@@ -44,7 +44,7 @@ const Signup = ( props ) => {
   return (
     <form autoComplete="off" onSubmit={ handleSubmit }>
       <div className='card'>
-          <div className='cardHeader'>sign in</div>
+          <div className='cardHeader1'>sign in</div>
           <div className="form">
               <input type="text" className='input' placeholder="name" name="name" onChange={ handleChange } autoFocus />
               {/* <label htmlFor="name" className='label'>name</label>   */}

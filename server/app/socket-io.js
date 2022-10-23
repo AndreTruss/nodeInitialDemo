@@ -29,7 +29,7 @@ function socketio( io ){
         socket.on('join', async ({ room_id }) => {
             socket.join( room_id );
             const user = await User.findOne({ _id: socket.id })
-            users.push( ` ${user.name} ` )
+            users.push( ` ${user.name.toUpperCase()} ` )
             io.in(room_id).emit('userOnChat', users )
             console.log(user.name, 'join chat:', room_id);
             console.log(users)
@@ -38,7 +38,7 @@ function socketio( io ){
         socket.on('leave', async ({ room_id }) => {
             const user = await User.findOne({ _id: socket.id })
             // console.log(socket.id, user.name, users)
-            const index = users.findIndex( (el) => el == ` ${user.name} `)
+            const index = users.findIndex( (el) => el == ` ${user.name.toUpperCase()} `)
             // console.log(index)
             users.splice( index, 1 );
             io.in(room_id).emit('userOffChat', users )

@@ -91,7 +91,7 @@ const getOneRoom = async (req, res) => {
 
 const deleteRoom = async (req, res) => {    
     const deleteRooms = await Room.findByIdAndDelete(req.body.id);
-    await Message.deleteMany({ where: { "room._id": req.body.id }});
+    await Message.deleteMany({ "room_id": req.body.id });
 
     (!deleteRooms) 
     ? res.status(400).json({ status: false, message: `No Room with this ID.`})

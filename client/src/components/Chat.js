@@ -17,7 +17,7 @@ const Chat = ({ socket }) => {
 
   const sendMessage = e => {
     e.preventDefault();
-    if ( newMessage !== '' ) {
+    if (socket &&  newMessage !== '') {
       socket.emit('chatMessage', {
         room_id, 
         message: newMessage,
@@ -28,38 +28,49 @@ const Chat = ({ socket }) => {
   }
 
   useEffect(() => { 
+    // if (socket) {
       socket.on('newMessage', message => {
         setMessages([...messages, message]);
       });
+    // }
   }, [messages, socket])
 
   useEffect(() => {
+    // if (socket){ 
+    // function joinLeave(){
       socket.emit('join', { room_id })
       socket.on('userOnChat', (user_name) => {
         setUsers( [...users, user_name] )
-        console.log(users)
       });
-
-    return () => {
-        socket.emit('leave', { room_id })
-        // setUsers([])
+      console.log(users)
+    // }
+    // return () => {
+      // if (socket){ 
+        /* socket.emit('leave', { room_id })
         socket.on('userOffChat', (result) => {
-          setUsers( [...result] )
-          console.log( users )
+          setUsers( result )
         })
-    }
+        console.log( users ) */
+      // }
+    // }
+  // }
+  // joinLeave()
+  // eslint-disable-next-line
   }, [socket, room_id]);
   
 
   useEffect(() => {
+    // if (socket){
       socket.emit("get-message-history", room_id)
       socket.on("message-history", (result) => {
         setMessages(result)
       })
-  }, [room_id, socket])
+    // }
+  }, [room_id, socket, messages])
 
   // Get chat name with the ID in params.
   useEffect(() => {
+    // if (socket){
       const getChatName = async () => {
       const res = await fetch('http://localhost:5000/room/' + room_id, {
         headers: {
@@ -71,16 +82,24 @@ const Chat = ({ socket }) => {
       if (data.status) setChatName(data.room.name)
       }
       getChatName();
+    // }
   }, [room_id, socket])
 
   const logout = () => {
-    localStorage.clear();    
+    localStorage.clear();
+    // setUsers([]) 
+    // console.log(users)   
     navigate('/login');
-    // socket.disconnect();
+    socket.disconnect();
     // socket.off()
   }
 
   const goBack = () => {
+    socket.emit('leave', { room_id })
+        socket.on('userOffChat', (array) => {
+          setUsers( array )
+        })
+        console.log( users )
     navigate('/home');
   }
 
@@ -88,7 +107,7 @@ const Chat = ({ socket }) => {
     <div className='card'>
     <div className='chat'>
       <div className='header'>
-        <span onClick={ goBack } className="logout">back</span>
+        <span onClick={ goBack } className="logout">home</span>
         <span onClick={ logout } className="logout">logout</span>
       </div>
       <div className='chatUser'>

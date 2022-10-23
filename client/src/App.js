@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState } from "react"
 import { HashRouter as Router, Routes, Route } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Signup from "./components/Signup"
