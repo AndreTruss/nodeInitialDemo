@@ -18,7 +18,7 @@ function socketio( io ){
         }
     });
 
-    io.on( 'connection', ( socket ) => {
+    io.on( 'connection', async ( socket ) => {
         console.log( 'user connected on socket.id:', socket.id );
         
         socket.on('disconnect', () => {
@@ -27,10 +27,10 @@ function socketio( io ){
         });
     
         socket.on('join', async ({ room_id }) => {
-            socket.join( room_id );
+            await socket.join( room_id );
             const user = await User.findOne({ _id: socket.id })
             users.push( ` ${user.name.toUpperCase()} ` )
-            io.in(room_id).emit('userOnChat', ` ${user.name.toUpperCase()} ` )
+            await io.in(room_id).emit('userOnChat', users )
             console.log(user.name, 'join chat:', room_id);
             console.log(users)
         });
@@ -40,12 +40,12 @@ function socketio( io ){
             // console.log(socket.id, user.name, users)
             const index = users.findIndex( (el) => el == ` ${user.name.toUpperCase()} `)
             // console.log(index)
-            users.splice( index, 1 );
-            io.in(room_id).emit('userOffChat', ` ${user.name.toUpperCase()} ` )
+            users.splice( index, 1 ),[0];
+            await io.in(room_id).emit('userOffChat', users )
             console.log(user.name, 'leave chat:', room_id);
             console.log(users)
 
-            socket.leave( room_id );
+            await socket.leave( room_id );
         });
     
         socket.on('chatMessage', async ({ room_id, message }) => {

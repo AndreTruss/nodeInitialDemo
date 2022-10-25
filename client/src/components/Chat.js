@@ -11,9 +11,9 @@ const Chat = ({ socket }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [chatName, setChatName] = useState('');
-  const [userName, setUserName] = useState('')
+  // const [userName, setUserName] = useState('')
   const [users, setUsers] = useState([]);
-  const [alert, setAlert] = useState(true);
+  // const [status, setStatus] = useState(true);
 
   const handleChange = e => setNewMessage(e.target.value);
 
@@ -38,33 +38,46 @@ const Chat = ({ socket }) => {
   }, [messages, socket])
 
   useEffect(() => {
-    if (alert){ 
+    // if (status){ 
       // const giveName = () => {
     // function joinLeave(){
       socket.emit('join', { room_id })
-      socket.on('userOnChat', (user_name) => {
+      socket.on('userOnChat', (users_name) => {
         // console.log(user_name)
-        setUserName(user_name);
+        // setUserName(user_name);
+        setUsers(users_name)
+        console.log(users)
       });
       // console.log(users)
     // }
     // return () => {
       // if (socket){ 
-        /* socket.emit('leave', { room_id })
-        socket.on('userOffChat', (result) => {
-          setUsers( result )
-        })
-        console.log( users ) */
+        // socket.emit('leave', { room_id })
+        /* socket.on('userOffChat', (users_name) => {
+          // console.log( users_name )
+          setUsers(users_name)
+          console.log(users)
+        }) */
       // }
       // }
       // joinLeave()
-      setUsers([...users, userName])
-      console.log(users)
-      setAlert(false)
-    }
+      // setStatus(false)
+      // }
     // giveName()
   // }
-}, [socket, room_id, userName]);
+  // eslint-disable-next-line
+  }, [socket, room_id]);
+
+  /* useEffect(() => {
+    socket.emit('join', { room_id })
+    socket.on('userOnChat', (users_name) => {
+      // console.log(user_name)
+      // setUserName(user_name);
+      setUsers(users_name)
+      console.log(users)
+    });
+    // eslint-disable-next-line
+  },[socket, room_id]) */
   
   useEffect(() => {
     // if (socket){
@@ -103,12 +116,12 @@ const Chat = ({ socket }) => {
 
   const goBack = () => {
     socket.emit('leave', { room_id })
-        socket.on('userOffChat', (user_name) => {
-          // console.log(user_name)
-          setUserName(user_name)
+        socket.on('userOffChat', (users_name) => {
+          console.log(users_name)
+          // setUserName(user_name)
+          setUsers(users_name)
+          console.log( users )
         })
-        setUsers([...users].filter( (el) => el !== userName ))
-        console.log( users )
     navigate('/home');
   }
 
@@ -120,10 +133,8 @@ const Chat = ({ socket }) => {
         <span onClick={ logout } className="logout">logout</span>
       </div>
       <div className='chatUser'>
-      <div className=''>
         <span className='chatHeader'>users on Chat:</span>
         <span className='message'>{users}</span>
-      </div>
       </div>
         <div className="cardHeader1">{chatName.toUpperCase()}</div>
       <div className='chatSection'>
