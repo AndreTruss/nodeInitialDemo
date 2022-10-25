@@ -11,13 +11,15 @@ const Chat = ({ socket }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [chatName, setChatName] = useState('');
+  const [userName, setUserName] = useState('')
   const [users, setUsers] = useState([]);
+  const [alert, setAlert] = useState(true);
 
   const handleChange = e => setNewMessage(e.target.value);
 
   const sendMessage = e => {
     e.preventDefault();
-    if (socket &&  newMessage !== '') {
+    if (newMessage !== '') {
       socket.emit('chatMessage', {
         room_id, 
         message: newMessage,
@@ -36,15 +38,15 @@ const Chat = ({ socket }) => {
   }, [messages, socket])
 
   useEffect(() => {
-    // if (socket){ 
+    if (alert){ 
+      // const giveName = () => {
     // function joinLeave(){
       socket.emit('join', { room_id })
       socket.on('userOnChat', (user_name) => {
         // console.log(user_name)
-        users.push(user_name)
-        setUsers(users);
+        setUserName(user_name);
       });
-      console.log(users)
+      // console.log(users)
     // }
     // return () => {
       // if (socket){ 
@@ -54,13 +56,16 @@ const Chat = ({ socket }) => {
         })
         console.log( users ) */
       // }
-    // }
+      // }
+      // joinLeave()
+      setUsers([...users, userName])
+      console.log(users)
+      setAlert(false)
+    }
+    // giveName()
   // }
-  // joinLeave()
-  // eslint-disable-next-line
-  }, [socket, room_id]);
+}, [socket, room_id, userName]);
   
-
   useEffect(() => {
     // if (socket){
       socket.emit("get-message-history", room_id)
@@ -100,9 +105,9 @@ const Chat = ({ socket }) => {
     socket.emit('leave', { room_id })
         socket.on('userOffChat', (user_name) => {
           // console.log(user_name)
-          users.splice( user_name, 1 )
-          setUsers(users)
+          setUserName(user_name)
         })
+        setUsers([...users].filter( (el) => el !== userName ))
         console.log( users )
     navigate('/home');
   }
@@ -116,7 +121,7 @@ const Chat = ({ socket }) => {
       </div>
       <div className='chatUser'>
       <div className=''>
-        <span className='chatHeader'>Users on Chat:</span>
+        <span className='chatHeader'>users on Chat:</span>
         <span className='message'>{users}</span>
       </div>
       </div>
