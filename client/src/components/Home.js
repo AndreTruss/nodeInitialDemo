@@ -6,7 +6,7 @@ const Home = ({ socket }) => {
   const navigate = useNavigate();
   const url = 'http://localhost:5000/room';
   const [chatrooms, setChatrooms] = useState([]);
-  const [newChatroom, setNewChatroom] = useState([]);
+  const [newChatroom, setNewChatroom] = useState('');
   const [text, setText] = useState('');
   const user = sessionStorage.getItem('user');
   const [alert, setAlert] = useState(true);
@@ -58,9 +58,9 @@ const Home = ({ socket }) => {
       if (data.status) {
         setNewChatroom('');
         setAlert(true);
-      } else {
-        setText(data.message);
       }
+
+      setText(data.message);
     
     //inputRef.current.focus();
   }
@@ -100,7 +100,7 @@ const Home = ({ socket }) => {
         </div>
         <div className="chatShadow">
           <div className="form">
-            <input type="text" id="chatName" className='input' placeholder='New chat-room name' value={newChatroom} onChange={ handleChange } />
+            <input type="text" className='input' placeholder='New chat-room name' name="name" onChange={ handleChange } />
             {/* <label htmlFor="name" className='label'>name</label> */}  
           </div>
           <div className='text'>{text}</div>

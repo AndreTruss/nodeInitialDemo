@@ -6,73 +6,108 @@ const jwt = require('jsonwebtoken');
 
 const signup = async ( req, res ) => {
     const { name, password } = req.body;
+
+    if ( name.match(/^ *$/) || password.match(/^ *$/) )
+    return res.status(404).json({ 
+        status: false,
+        input: 'password', 
+        message: 'Username and Password are required, empty string refused.',
+    });
+
     const findUser = await User.findOne( { name })
-
-    if (findUser){ 
-        return res.status(400).json({ status: false, message: 'Name already used.'});
-
-    } else if (password.length < 6){ 
-        return res.status(400).json({ status: false, message: 'Password must be at least 6 characters long.' });
-
-    } else {
-        const user = new User({ 
-        name,  
-        password: await brcypt.hash(password, 10)
+    if (findUser)
+        return res.status(400).json({ 
+            status: false, 
+            input: 'name',
+            message: 'Username already used.',
         });
 
-        await user.save();
+    if (password.length < 6)
+        return res.status(400).json({ 
+            status: false, 
+            input: 'password',
+            message: 'Password must be at least 6 characters long.' ,
+        });  
     
-        const token = jwt.sign( { id: user._id }, 'process.env.SECRET' );
+    const user = new User({ 
+        name,  
+        password: await brcypt.hash(password, 10)
+    });
 
-        res.status(200).json({ 
+    await user.save();
+    
+    const token = jwt.sign( { id: user._id }, 'process.env.SECRET' );
+
+    res.status(200).json({ 
         status: true,
         message: `User created.`,
         user,
         token
-        })
-    }
+    })
 };
 
 const login = async ( req, res ) => {
     const { name, password } = req.body;
+
+    if ( name.match(/^ *$/) || password.match(/^ *$/) )
+    return res.status(404).json({ 
+        status: false,
+        input: 'password', 
+        message: 'Username and Password are required, empty string refused.',
+    });
     
     const user = await User.findOne({ name });
-    
     if (!user )
-    return res.status(404).json({ status: false, message: "User doesn't exist."});
+    return res.status(404).json({ 
+        status: false,
+        input: 'name', 
+        message: "Username doesn't exist.",
+    });
+
     const comparePW = await brcypt.compare(password, user.password);
+    if ( !comparePW )
+        return res.status(400).json({ 
+            status: false, 
+            input: 'password',
+            message: "Wrong password.",
+        });
 
-    if ( !comparePW ){ 
-        return res.status(400).json({ status: false, message: "Wrong password."});
+        
+    const token = jwt.sign( { id: user._id }, 'process.env.SECRET' );
 
-    } else {    
-        const token = jwt.sign( { id: user._id }, 'process.env.SECRET' );
-
-        res.status(200).json({
-            status: true,
-            message: "User logged.",
-            user,
-            token
-        }); 
-    }
+    res.status(200).json({
+        status: true,
+        message: "User logged.",
+        user,
+        token
+    }); 
+    
 };
 
 
 const createRoom = async (req, res) => {
     const { name } = req.body;
-    const findRoom = await Room.findOne({ name });
     
-    if (name == ''){ 
-        return res.status(400).json({ status: false, message: `Name required`});
+    if ( name.match(/^ *$/) ) 
+        return res.status(404).json({ 
+            status: false, 
+            message: `Name required, not empty string`,
+        });
+    
+    const findRoom = await Room.findOne({ name });
+    if (findRoom)
+        return res.status(400).json({ 
+            status: false, 
+            message: `Room ${name.toUpperCase()} already exits.`,
+        });
 
-    } else if (findRoom){ 
-        return res.status(400).json({ status: false, message: `Room ${name} already exits.`});
-
-    } else {
-        const room = new Room({ name });
-        await room.save();
-        res.status(200).json({ status: true, message: `Room ${name} created.`, room: room});
-    }
+    const room = new Room({ name });
+    await room.save();
+    res.status(200).json({ 
+        status: true, 
+        message: `Room ${name.toUpperCase()} created.`, room: room,
+    });
+    
 };
 
 const getAllRooms = async (req, res) => {

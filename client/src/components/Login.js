@@ -3,23 +3,24 @@ import { useNavigate, Link } from "react-router-dom";
 
 const Login = ( props ) => {
   const navigate = useNavigate();
-  const [text, setText] = useState('');
+  const [textPW, setTextPW] = useState('');
+  const [textName, setTextName] = useState('');
   const [values, setValues] = useState({name: '', password: ''});
 
   const handleChange = e => setValues({ ...values, [e.target.name]: e.target.value });
   
-  const validateForm = () => {
+  /* const validateForm = () => {
     const { name, password } = values;
     if (name === /^ *$/ || password === /^ *$/) {
-      setText('name and password is required, an empty string is not valid.')
+      setTextPW('name and password is required, an empty string is not valid.')
       return false
     } 
     return true;    
-  }
+  } */
 
   const handleSubmit = async e => {
     e.preventDefault();
-    if (!validateForm()) return;
+    // if (!validateForm()) return;
     const { name, password } = values;
     const url = 'http://localhost:5000/login';
     const options = {
@@ -37,8 +38,16 @@ const Login = ( props ) => {
       sessionStorage.setItem('user', data.user.name);
       await props.connectSocket();
       navigate('/home');
-    } else {
-    setText(data.message);
+    }  
+
+    if (data.input === 'name'){
+      setTextName(data.message)
+      setTextPW('')
+    } 
+
+    if (data.input === 'password'){
+      setTextName('')
+      setTextPW(data.message)
     }
   }
 
@@ -47,14 +56,15 @@ const Login = ( props ) => {
         <div className='card'>
             <div className='cardHeader1'>Log in</div>
             <div className="form">
-                <input type="name" className='input' placeholder="name" name="name" onChange={ handleChange} />
+                <input type="name" className='input' placeholder="Username" name="name" onChange={ handleChange} />
                 {/* <label htmlFor="name" className='label'>name</label>   */}
             </div>
+            <div className='text'>{textName}</div>
             <div className="form">
-                <input type="password" className='input' placeholder="password" name="password" onChange={ handleChange } />
+                <input type="password" className='input' placeholder="Password" name="password" onChange={ handleChange } />
                 {/* <label htmlFor="password" className='label'>password</label> */}
             </div>
-            <div className='text'>{text}</div>
+            <div className='text'>{textPW}</div>
             <button type='submit' className='button'>enter</button>
             <span><Link to="/signup" className='logSignIn'>SIGN IN</Link></span>
         </div>

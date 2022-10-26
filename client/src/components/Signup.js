@@ -3,7 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 
 const Signup = ( props ) => {
   const navigate = useNavigate();
-  const [text, setText] = useState(' ');
+  const [textName, setTextName] = useState(' ');
+  const [textPW, setTextPW] = useState(' ');
   const [values, setValues] = useState({name: '', password: ''});
 
   const handleChange = e => setValues({ ...values, [e.target.name]: e.target.value });
@@ -11,7 +12,7 @@ const Signup = ( props ) => {
   const validateForm = () => {
     const { name, password } = values;
     if (name === /^ *$/ || password === /^ *$/) {
-      setText('Name and password is required, an empty string is not valid.')
+      setTextPW('Name and password is required, an empty string is not valid.')
       return false
     } 
     return true;    
@@ -37,8 +38,17 @@ const Signup = ( props ) => {
       sessionStorage.setItem('user', data.user.name)
       props.connectSocket();
       navigate('/home');
-    }
-    setText(data.message);
+    } 
+    
+    if (data.input === 'name'){
+      setTextName(data.message)
+      setTextPW('')
+    } 
+    
+    if (data.input === 'password'){
+      setTextName('')
+      setTextPW(data.message)
+    };
   }
 
   return (
@@ -49,11 +59,12 @@ const Signup = ( props ) => {
               <input type="text" className='input' placeholder="name" name="name" onChange={ handleChange } />
               {/* <label htmlFor="name" className='label'>name</label>   */}
           </div>
+          <div className='text'>{ textName }</div>
           <div className="form">
               <input type="password"  className='input' placeholder="password" name="password" onChange={ handleChange } />
               {/* <label htmlFor="password" className='label'>password</label>   */}
           </div>
-          <div className='text'>{ text }</div>
+          <div className='text'>{ textPW }</div>
           <button className='button'>enter</button>
           <span><Link to="/login" className='logSignIn'>LOG IN</Link></span>
       </div>

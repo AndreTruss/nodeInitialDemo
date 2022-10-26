@@ -5,13 +5,14 @@ const verifyJWT = async (req, res, next) => {
         const token = req.header('Authorization');
         //console.log(req.headers.authorization, token)
         if (!token) 
-            return res.status(401).json( { message: "Not authorized"} )
-        const payload = await jwt.verify( token, 'process.env.SECRET' ); 
+            return res.status(401).json( {status: false, message: "Not authorized"} )
+
+        const payload = jwt.verify( token, 'process.env.SECRET' ); 
         // console.log(payload)       
         req.payload = payload;
         next();
     } catch (err) {
-        res.status(403).json({ message: "Not authorized."})
+        res.status(403).json({ status: false, message: "Not authorized."})
     }
 };
 
