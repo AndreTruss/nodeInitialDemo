@@ -10,8 +10,8 @@ const Signup = ( props ) => {
  
   const validateForm = () => {
     const { name, password } = values;
-    if (name === '' || password === '') {
-      setText('Name and password is required.')
+    if (name === /^ *$/ || password === /^ *$/) {
+      setText('Name and password is required, an empty string is not valid.')
       return false
     } 
     return true;    
@@ -46,7 +46,7 @@ const Signup = ( props ) => {
       <div className='card'>
           <div className='cardHeader1'>sign in</div>
           <div className="form">
-              <input type="text" className='input' placeholder="name" name="name" onChange={ handleChange } autoFocus />
+              <input type="text" className='input' placeholder="name" name="name" onChange={ handleChange } />
               {/* <label htmlFor="name" className='label'>name</label>   */}
           </div>
           <div className="form">
@@ -55,7 +55,7 @@ const Signup = ( props ) => {
           </div>
           <div className='text'>{ text }</div>
           <button className='button'>enter</button>
-          <span><Link to="/login" className='span'>LOG IN</Link></span>
+          <span><Link to="/login" className='logSignIn'>LOG IN</Link></span>
       </div>
     </form>
   )

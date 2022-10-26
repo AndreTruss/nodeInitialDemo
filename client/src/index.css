@@ -89,7 +89,7 @@ body {
     border-radius: 4px;
     margin-bottom: 10px;
     text-transform: uppercase;
-    font-size: 2em;
+    font-size: 1em;
     font-weight: bold;
     /* text-align: left; */
     border: 2px solid var(--primary-color);
@@ -137,7 +137,7 @@ body {
 }
 
 .text {
-    font-size: 0.7em;
+    font-size: 0.6em;
     text-align: center;
     font-weight: bold;
     margin: 5px 0 0 0;
@@ -158,15 +158,21 @@ body {
     margin-top: 5px;
 }
 
-.span {
+.logSignIn {
     font-size: 0.6em;
-    cursor: pointer;
+    /* cursor: pointer;
     position: relative;
-    left: 44%;
+    left: 44%; */
+    display: block;
+    margin: 0.25rem 0 0 0;
+    padding: 0.1rem;
+    border-radius: 5px;
+    text-align: center;
+    background: #ffe100;
 }
 
 .button:hover,
-.span:hover {
+.logSignIn:hover {
     background: var(--hover-color);
     color: var(--gray-color); 
 }
@@ -183,7 +189,7 @@ body {
   flex-direction: column;
   justify-content: flex-end; */
     margin-top: 1rem;
-    font-size: 0.5em;
+    /* font-size: 0.5em; */
     max-height: 248px;
     padding: 0.5rem;
     border-radius: 5px;
@@ -213,7 +219,7 @@ body {
 
 .chatName {
     color: var(--primary-color);
-    font-size: 1.8em;
+    font-size: 0.9em;
     font-weight: 700;
     font-family: var(--font-1);
     padding: 0.12rem 0.5rem;
@@ -234,7 +240,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
     margin-right: 5px;
-    font-size: 1.1em;
+    font-size: 0.6em;
 }
 
 .delete:hover {

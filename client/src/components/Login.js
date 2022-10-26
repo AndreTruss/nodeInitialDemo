@@ -10,8 +10,8 @@ const Login = ( props ) => {
   
   const validateForm = () => {
     const { name, password } = values;
-    if (name === '' || password === '') {
-      setText('name and password is required.')
+    if (name === /^ *$/ || password === /^ *$/) {
+      setText('name and password is required, an empty string is not valid.')
       return false
     } 
     return true;    
@@ -56,7 +56,7 @@ const Login = ( props ) => {
             </div>
             <div className='text'>{text}</div>
             <button type='submit' className='button'>enter</button>
-            <span><Link to="/signup" className='span'>SIGN IN</Link></span>
+            <span><Link to="/signup" className='logSignIn'>SIGN IN</Link></span>
         </div>
     </form>   
  )

@@ -7,7 +7,7 @@ const Messages = ({ message }) => {
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     if (token) {
-      const payload = JSON.parse(atob(token.split('.')[1]));
+      const payload = JSON.parse(window.atob(token.split('.')[1]));
       setUserId(payload.id);
     }
   }, []);

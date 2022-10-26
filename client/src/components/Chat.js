@@ -137,7 +137,7 @@ const Chat = ({ socket }) => {
         <span onClick={ logout } className="logout">logout</span>
       </div>
       <div className='chatUser'>
-        <span className='chatHeader'>users on Chat:</span>
+        <span className='chatHeader'>Users on Chat:</span>
         <span className='message'>{sessionStorage.getItem('users_name')}</span>
       </div>
         <div className="cardHeader1">{chatName.toUpperCase()}</div>
