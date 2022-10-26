@@ -33,8 +33,8 @@ const Login = ( props ) => {
     const data = await res.json();
 
     if (data.status) {
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', data.user.name);
+      sessionStorage.setItem('token', data.token);
+      sessionStorage.setItem('user', data.user.name);
       await props.connectSocket();
       navigate('/home');
     } else {

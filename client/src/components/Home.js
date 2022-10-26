@@ -8,7 +8,7 @@ const Home = ({ socket }) => {
   const [chatrooms, setChatrooms] = useState([]);
   const [newChatroom, setNewChatroom] = useState([]);
   const [text, setText] = useState('');
-  const user = localStorage.getItem('user');
+  const user = sessionStorage.getItem('user');
   const [alert, setAlert] = useState(true);
   // const inputRef = useRef();
 
@@ -19,7 +19,7 @@ const Home = ({ socket }) => {
         const options = {
           method: 'GET',
           headers: {
-            Authorization: localStorage.getItem('token'),
+            Authorization: sessionStorage.getItem('token'),
             'Content-Type': 'application/json',
           },
           
@@ -46,7 +46,7 @@ const Home = ({ socket }) => {
       const options = {
         method: 'POST',
         headers: {
-          Authorization: localStorage.getItem('token'),
+          Authorization: sessionStorage.getItem('token'),
           'Content-Type': 'application/json',
         },
         body: JSON.stringify( { name: newChatroom } )
@@ -75,7 +75,7 @@ const Home = ({ socket }) => {
     const options = {
       method: 'DELETE',
       headers: {
-        Authorization: localStorage.getItem('token'),
+        Authorization: sessionStorage.getItem('token'),
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ id: e.target.id })

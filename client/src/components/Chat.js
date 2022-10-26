@@ -12,7 +12,7 @@ const Chat = ({ socket }) => {
   const [newMessage, setNewMessage] = useState('');
   const [chatName, setChatName] = useState('');
   // const [userName, setUserName] = useState('')
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   // const [status, setStatus] = useState(true);
 
   const handleChange = e => setNewMessage(e.target.value);
@@ -45,20 +45,22 @@ const Chat = ({ socket }) => {
       socket.on('userOnChat', (users_name) => {
         // console.log(user_name)
         // setUserName(user_name);
-        setUsers(users_name)
-        console.log(users)
+        sessionStorage.setItem('users_name', users_name);
+        // users = sessionStorage.getItem('users_name');
+        // setUsers(users_name)
+        // console.log(users)
       });
       // console.log(users)
     // }
-    // return () => {
+    /* return () => {
       // if (socket){ 
         // socket.emit('leave', { room_id })
-        /* socket.on('userOffChat', (users_name) => {
+        socket.on('userOffChat', (users_name) => {
           // console.log( users_name )
           setUsers(users_name)
           console.log(users)
-        }) */
-      // }
+        })
+      } */
       // }
       // joinLeave()
       // setStatus(false)
@@ -94,7 +96,7 @@ const Chat = ({ socket }) => {
       const getChatName = async () => {
       const res = await fetch('http://localhost:5000/room/' + room_id, {
         headers: {
-          Authorization: localStorage.getItem('token'),
+          Authorization: sessionStorage.getItem('token'),
         },
       });
       const data = await res.json();
@@ -106,21 +108,23 @@ const Chat = ({ socket }) => {
   }, [room_id, socket])
 
   const logout = () => {
-    localStorage.clear();
+    sessionStorage.clear();
     // setUsers([]) 
     // console.log(users)   
     navigate('/login');
     socket.disconnect();
-    // socket.off()
+    socket.connect()
   }
 
   const goBack = () => {
     socket.emit('leave', { room_id })
         socket.on('userOffChat', (users_name) => {
-          console.log(users_name)
+          // console.log(users_name)
+          sessionStorage.setItem('users_name', users_name);
+          // users = sessionStorage.getItem('users_name');
           // setUserName(user_name)
-          setUsers(users_name)
-          console.log( users )
+          // setUsers(users_name)
+          // console.log( users )
         })
     navigate('/home');
   }
@@ -134,7 +138,7 @@ const Chat = ({ socket }) => {
       </div>
       <div className='chatUser'>
         <span className='chatHeader'>users on Chat:</span>
-        <span className='message'>{users}</span>
+        <span className='message'>{sessionStorage.getItem('users_name')}</span>
       </div>
         <div className="cardHeader1">{chatName.toUpperCase()}</div>
       <div className='chatSection'>

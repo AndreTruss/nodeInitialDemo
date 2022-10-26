@@ -14,12 +14,12 @@ function App() {
 
 // Setup sockets.io
 const connectSocket = () => {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
 
   if (token && !socket) {
     const newSocket = io('http://localhost:5000', {
       query: {
-        token: localStorage.getItem('token'),
+        token: sessionStorage.getItem('token'),
       } 
     });
 

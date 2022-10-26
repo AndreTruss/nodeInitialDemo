@@ -5,7 +5,7 @@ const Messages = ({ message }) => {
   const [userId, setUserId] = useState('');
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
       const payload = JSON.parse(atob(token.split('.')[1]));
       setUserId(payload.id);
