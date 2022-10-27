@@ -14,6 +14,13 @@ const signup = async ( req, res ) => {
         message: 'Username and Password are required, empty string refused.',
     });
 
+    if ( name.length > 15 ) 
+    return res.status(404).json({ 
+        status: false,
+        input: 'name', 
+        message: 'Username cannot be more than 16 characters.',
+    });
+
     const findUser = await User.findOne( { name })
     if (findUser)
         return res.status(400).json({ 
@@ -56,6 +63,13 @@ const login = async ( req, res ) => {
         message: 'Username and Password are required, empty string refused.',
     });
     
+    if ( name.length > 15 ) 
+    return res.status(404).json({ 
+        status: false,
+        input: 'name', 
+        message: 'Username cannot be more than 16 characters.',
+    });
+    
     const user = await User.findOne({ name });
     if (!user )
     return res.status(404).json({ 
@@ -93,6 +107,13 @@ const createRoom = async (req, res) => {
             status: false, 
             message: `Name required, not empty string`,
         });
+
+    if ( name.length > 15 ) 
+    return res.status(404).json({ 
+        status: false,
+        input: 'name', 
+        message: 'Room name cannot be more than 16 characters.',
+    });
     
     const findRoom = await Room.findOne({ name });
     if (findRoom)

@@ -54,9 +54,10 @@ const Login = ( props ) => {
   return (
     <form autoComplete="off" onSubmit={ handleSubmit }>
         <div className='card'>
+        <div className='container'>
             <div className='cardHeader1'>Log in</div>
             <div className="form">
-                <input type="name" className='input' placeholder="Username" name="name" onChange={ handleChange} />
+                <input type="name" className='input' placeholder="Name" name="name" onChange={ handleChange} />
                 {/* <label htmlFor="name" className='label'>name</label>   */}
             </div>
             <div className='text'>{textName}</div>
@@ -67,6 +68,7 @@ const Login = ( props ) => {
             <div className='text'>{textPW}</div>
             <button type='submit' className='button'>enter</button>
             <span><Link to="/signup" className='logSignIn'>SIGN IN</Link></span>
+        </div>
         </div>
     </form>   
  )

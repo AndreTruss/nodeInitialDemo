@@ -41,8 +41,6 @@ const Home = ({ socket }) => {
 
   const handleSubmit = async e => {
     e.preventDefault(); 
-    
-      setText('');
       const options = {
         method: 'POST',
         headers: {
@@ -57,6 +55,7 @@ const Home = ({ socket }) => {
 
       if (data.status) {
         setNewChatroom('');
+        setText('')
         setAlert(true);
       }
 
@@ -91,6 +90,7 @@ const Home = ({ socket }) => {
   return (
     <form autoComplete="off" onSubmit={ handleSubmit }>
       <div className='card'>
+      <div className='container'>
         <div className='cardHeader2'>Welcome {user} </div>
         <div className="chatrooms">
           <div className='cardHeader3'>Join chats:</div>
@@ -100,12 +100,13 @@ const Home = ({ socket }) => {
         </div>
         <div className="chatShadow">
           <div className="form">
-            <input type="text" className='input' placeholder='New chat-room name' name="name" onChange={ handleChange } />
+            <input type="text" className='input' placeholder='New chat-room name' value={newChatroom} onChange={ handleChange } />
             {/* <label htmlFor="name" className='label'>name</label> */}  
           </div>
           <div className='text'>{text}</div>
           <button className='button'>create chat</button>
         </div>
+      </div>
       </div>
     </form>   
   )

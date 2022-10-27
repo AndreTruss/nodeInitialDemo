@@ -1,5 +1,5 @@
 import React, { useState } from "react"
-import { HashRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Signup from "./components/Signup"
 import Home from "./components/Home"
@@ -14,10 +14,10 @@ function App() {
 
 // Setup sockets.io
 const connectSocket = () => {
-  const token = sessionStorage.getItem('token');
+  // const token = sessionStorage.getItem('token');
 
-  if (token && !socket) {
-    const newSocket = io('http://localhost:5000', {
+  if (!socket) { 
+    const newSocket = io.connect('http://localhost:5000', {
       query: {
         token: sessionStorage.getItem('token'),
       } 
@@ -25,18 +25,18 @@ const connectSocket = () => {
 
     /* newSocket.on('disconnect', () => {   
       setSocket(null);
-      setTimeout(connectSocket, 3000);
-      console.log('Socket disconnected.');
+      connectSocket();
+      console.log(socket.disconnected);
     });
     newSocket.on('connection', () => {
       console.log('Socket connected.');
-    }); */
-    setSocket(newSocket);
+    });*/
+    setSocket(newSocket); 
   };
 };
 
+connectSocket();
 /* useEffect(() => {
-  connectSocket();
   return () => {
       socket.disconnect()
       socket.off()
