@@ -108,7 +108,7 @@ const Chat = ({ socket }) => {
   }, [room_id, socket])
 
   const logout = () => {
-    sessionStorage.clear();
+    // sessionStorage.clear();
     // setUsers([]) 
     // console.log(users)   
     navigate('/login');
