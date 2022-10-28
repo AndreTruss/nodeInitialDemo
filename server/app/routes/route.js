@@ -9,6 +9,6 @@ router.post('/login', controllers.login );
 router.post('/room', verifyJWT, controllers.createRoom );
 router.get('/room', verifyJWT, controllers.getAllRooms );
 router.get('/room/:id', verifyJWT, controllers.getOneRoom );
-router.delete('/room', verifyJWT, controllers.deleteRoom );
+router.delete('/room/:id', verifyJWT, controllers.deleteRoom );
 
 module.exports = router;

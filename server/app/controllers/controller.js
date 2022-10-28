@@ -43,7 +43,7 @@ const signup = async ( req, res ) => {
 
     await user.save();
     
-    const token = jwt.sign( { id: user._id }, 'process.env.SECRET', {expiresIn: '24h'} );
+    const token = jwt.sign( { id: user._id }, process.env.SECRET, {expiresIn: '24h'} );
 
     res.status(200).json({ 
         status: true,
@@ -87,7 +87,7 @@ const login = async ( req, res ) => {
         });
 
         
-    const token = jwt.sign( { id: user._id }, 'process.env.SECRET', {expiresIn: '24h'} );
+    const token = jwt.sign( { id: user._id }, process.env.SECRET, {expiresIn: '24h'} );
 
     res.status(200).json({
         status: true,
@@ -111,7 +111,6 @@ const createRoom = async (req, res) => {
     if ( name.length > 15 ) 
     return res.status(404).json({ 
         status: false,
-        input: 'name', 
         message: 'Room name cannot be more than 16 characters.',
     });
     
@@ -146,8 +145,8 @@ const getOneRoom = async (req, res) => {
 }
 
 const deleteRoom = async (req, res) => {    
-    const deleteRooms = await Room.findByIdAndDelete(req.body.id);
-    await Message.deleteMany({ "room_id": req.body.id });
+    const deleteRooms = await Room.findByIdAndDelete(req.params.id);
+    await Message.deleteMany({ "room_id": req.params.id });
 
     (!deleteRooms) 
     ? res.status(400).json({ status: false, message: `No Room with this ID.`})

@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const RoomList = ({ room, onDelete }) => {
+const RoomList = ({ chatroom, onDelete }) => {
   return (
     <div className="chatroom">
-        <Link to={'/chat/' + room._id } name={ room.name }><div className='chatName'>{ `-> ${room.name.toUpperCase()}` }</div></Link>
-        <div className='delete' id={ room._id } onClick={ onDelete }>DELETE</div> 
+        <Link to={'/chat/' + chatroom._id } name={ chatroom.name }><div className='chatName'>{ `-> ${chatroom.name.toUpperCase()}` }</div></Link>
+        <div className='delete' id={ chatroom._id } onClick={ onDelete }>DELETE</div> 
     </div>
   )
 }

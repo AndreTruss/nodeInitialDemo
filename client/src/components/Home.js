@@ -65,7 +65,7 @@ const Home = ({ socket }) => {
     e.preventDefault();
     setChatrooms(chatrooms.filter(chatroom => chatroom._id !== e.target.id))
     
-    const url = 'http://localhost:5000/room';
+    const url = 'http://localhost:5000/room/' + e.target.id;
     const options = {
       method: 'DELETE',
       headers: {
@@ -77,6 +77,13 @@ const Home = ({ socket }) => {
     await fetch(url, options);
   }
 
+  const logout = () => {
+    sessionStorage.clear();   
+    navigate('/login');
+    socket.disconnect();
+    socket.connect()
+  }
+
   if (!user) {
     return navigate('/signup');
   }
@@ -84,7 +91,10 @@ const Home = ({ socket }) => {
   return (
     <form autoComplete="off" onSubmit={ handleSubmit }>
       <div className='card'>
-      <div className='container'>
+      <div className='containerHome'>
+      <div className='headerHome'>
+        <span onClick={ logout } className="logout">logout</span>
+      </div>
         <div className='cardHeader2'>Welcome {user} </div>
         <div className="chatrooms">
           <div className='cardHeader3'>Join chats:</div>

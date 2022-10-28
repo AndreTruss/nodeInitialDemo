@@ -136,6 +136,17 @@ input:focus {
   color: var(--primary-color);
 }
 
+.headerHome {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: flex-end;
+  font-size: 0.6em;
+  margin-top: 10px;
+  height: 36px;
+  color: var(--primary-color);
+}
+
 .logout {
   background: var(--primary-color);
   color: var(--gray-color);

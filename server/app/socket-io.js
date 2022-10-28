@@ -9,9 +9,8 @@ function socketio( io ){
     io.use(async (socket, next) => {
         try {
             const token = socket.handshake.auth.token;
-            const payload = jwt.verify(token, 'process.env.SECRET');        
+            const payload = jwt.verify(token, process.env.SECRET);        
             socket.id = payload.id;
-            // console.log('payload', payload, 'socket', socket.id)
             next();
         } catch (err) {
             console.log(err);
@@ -28,22 +27,17 @@ function socketio( io ){
     
         socket.on('join', async ({ room_id }) => {
             await socket.join( room_id );
+
             const user = await User.findOne({ _id: socket.id })
             users.push( ` ${user.name.toUpperCase()} ` )
             await io.in(room_id).emit('userOnChat', users )
-            console.log(user.name, 'join chat:', room_id);
-            console.log(users)
         });
         
         socket.on('leave', async ({ room_id }) => {
             const user = await User.findOne({ _id: socket.id })
-            // console.log(socket.id, user.name, users)
             const index = users.findIndex( (el) => el == ` ${user.name.toUpperCase()} `)
-            // console.log(index)
             users.splice( index, 1 ),[0];
             await io.in(room_id).emit('userOffChat', users )
-            console.log(user.name, 'leave chat:', room_id);
-            console.log(users)
 
             await socket.leave( room_id );
         });

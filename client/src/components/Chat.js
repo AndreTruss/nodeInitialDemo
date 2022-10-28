@@ -90,7 +90,7 @@ const Chat = ({ socket }) => {
         <div className="chatContent">
           <STB className="messages">
             {
-              messages.map((message, i) => <Messages key={ i } message={ message } />)
+              messages.map((message, index) => <Messages key={index} message={ message } socket={socket} />)
             }
             {/* <div className="anchor"></div> */}
           </STB>

@@ -4,7 +4,7 @@ const cors = require('cors');
 // const { Server } = require('socket.io');
 const router = require('./routes/route');
 const { connectDB } = require('./config/db');
-const  CORS_URL  = 'http://localhost:3000';
+const  { CORS_URL }  = require('./config/config');
 const { socketio} = require('./socket-io')
 
 const app = express();
