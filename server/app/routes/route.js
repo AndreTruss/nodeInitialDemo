@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const controllers = require('../controllers/controller');
-const { verifyJWT } = require('../helpers/helper')
+const { verifyJWT } = require('../middlewares/verifyToken')
 
 router.post('/signup', controllers.signup );
 router.post('/login', controllers.login );

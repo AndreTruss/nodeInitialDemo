@@ -1,16 +1,11 @@
-import React from "react"
-import { Link } from "react-router-dom"
-import Room from "./Room"
+import React from 'react'
+import { Link } from 'react-router-dom'
 
-function RoomList({ rooms }) {
+const RoomList = ({ room, onDelete }) => {
   return (
-    <div>
-      {rooms &&
-        rooms.map((room) => (
-          <Link to={`/chat/${room._id}/${room.name}`} key={room._id}>
-            <Room name={room.name} />
-          </Link>
-        ))}
+    <div className="chatroom">
+        <Link to={'/chat/' + room._id } name={ room.name }><div className='chatName'>{ `-> ${room.name.toUpperCase()}` }</div></Link>
+        <div className='delete' id={ room._id } onClick={ onDelete }>DELETE</div> 
     </div>
   )
 }
