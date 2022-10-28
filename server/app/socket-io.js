@@ -8,10 +8,10 @@ function socketio( io ){
     
     io.use(async (socket, next) => {
         try {
-            const token = socket.handshake.query.token;
+            const token = socket.handshake.auth.token;
             const payload = jwt.verify(token, 'process.env.SECRET');        
             socket.id = payload.id;
-            // console.log(payload, socket.id)
+            // console.log('payload', payload, 'socket', socket.id)
             next();
         } catch (err) {
             console.log(err);

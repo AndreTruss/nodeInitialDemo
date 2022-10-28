@@ -57,12 +57,12 @@ const Signup = ( props ) => {
       <div className='container'>
           <div className='cardHeader1'>sign in</div>
           <div className="form">
-              <input type="text" className='input' placeholder="Name" onChange={ handleChange } />
+              <input type="text" className='input' placeholder="Name" name='name' onChange={ handleChange } />
               {/* <label htmlFor="name" className='label'>name</label>   */}
           </div>
           <div className='text'>{ textName }</div>
           <div className="form">
-              <input type="password"  className='input' placeholder="Password" onChange={ handleChange } />
+              <input type="password"  className='input' placeholder="Password" name='password' onChange={ handleChange } />
               {/* <label htmlFor="password" className='label'>password</label>   */}
           </div>
           <div className='text'>{ textPW }</div>

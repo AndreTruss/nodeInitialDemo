@@ -15,10 +15,10 @@ function App() {
 // Setup sockets.io
 const connectSocket = () => {
   // const token = sessionStorage.getItem('token');
-
+// console.log(token)
   if (!socket) { 
-    const newSocket = io.connect('http://localhost:5000', {
-      query: {
+    const newSocket = io('http://localhost:5000', {
+      auth: {
         token: sessionStorage.getItem('token'),
       } 
     });

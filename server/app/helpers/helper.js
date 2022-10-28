@@ -3,12 +3,12 @@ const jwt = require('jsonwebtoken');
 const verifyJWT = async (req, res, next) => {
     try {
         const token = req.header('Authorization');
-        //console.log(req.headers.authorization, token)
+        // console.log('req:', req.headers.authorization, 'token', token)
         if (!token) 
             return res.status(401).json( {status: false, message: "Not authorized"} )
 
         const payload = jwt.verify( token, 'process.env.SECRET' ); 
-        console.log(payload)       
+        // console.log(payload)       
         req.payload = payload;
         next();
     } catch (err) {
