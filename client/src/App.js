@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { HashRouter as Router, Routes, Route } from "react-router-dom"
 import Navbar from "./components/Navbar"
 import Signup from "./components/Signup"
@@ -11,8 +11,9 @@ function App() {
   const [socket, setSocket] = useState(null);
 
 const connectSocket = () => {
-  
-  if (!socket) { 
+  const token = sessionStorage.getItem('token')
+
+  if (token && !socket) { 
     const newSocket = io('http://localhost:5000', {
       auth: {
         token: sessionStorage.getItem('token'),
@@ -23,7 +24,11 @@ const connectSocket = () => {
   };
 };
 
-connectSocket();
+
+useEffect(() => {
+  connectSocket();
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <div className="App" id="color">

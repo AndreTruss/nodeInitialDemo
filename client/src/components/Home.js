@@ -44,20 +44,18 @@ const Home = ({ socket }) => {
           Authorization: sessionStorage.getItem('token'),
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify( { name: newRoom } )
+        body: JSON.stringify( { name: newRoom, user_id: socket.id } )
       };
       const res = await fetch(url, options);
       const data = await res.json();
-      console.log(data)
 
       if (data.status) {
+        setText('');
         setNewRoom('');
-        setText('')
         setAlert(true);
+      } else {
+        setText(data.message);
       }
-
-      setText(data.message);
-    
   }
 
   // Delete Room
@@ -77,13 +75,6 @@ const Home = ({ socket }) => {
     await fetch(url, options);
   }
 
-  const logout = () => {
-    sessionStorage.clear();   
-    navigate('/login');
-    socket.disconnect();
-    socket.connect()
-  }
-
   if (!user) {
     return navigate('/signup');
   }
@@ -91,15 +82,12 @@ const Home = ({ socket }) => {
   return (
     <form autoComplete="off" onSubmit={ handleSubmit }>
       <div className='card'>
-      <div className='containerHome'>
-      <div className='headerHome'>
-        <span onClick={ logout } className="logout">logout</span>
-      </div>
+      <div className='container'>
         <div className='cardHeader2'>Welcome {user} </div>
         <div className="chatrooms">
           <div className='cardHeader3'>Join chats:</div>
           {
-          chatrooms.map(chatroom => <RoomList key={ chatroom._id } chatroom={ chatroom } onDelete={ deleteRoom } />)
+          chatrooms.map(chatroom => <RoomList key={ chatroom._id } chatroom={ chatroom } onDelete={ deleteRoom } socket={socket} />)
           }
         </div>
         <div className="chatShadow">

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
 
-const Signup = ( props ) => {
+const Signup = ( fnct ) => {
   const navigate = useNavigate();
   const [textName, setTextName] = useState(' ');
   const [textPW, setTextPW] = useState(' ');
@@ -26,7 +26,7 @@ const Signup = ( props ) => {
     if (data.status) {
       sessionStorage.setItem('token', data.token);
       sessionStorage.setItem('user', data.user.name)
-      props.connectSocket();
+      await fnct.connectSocket();
       navigate('/home');
     } 
     

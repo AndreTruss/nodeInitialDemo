@@ -100,7 +100,7 @@ const login = async ( req, res ) => {
 
 
 const createRoom = async (req, res) => {
-    const { name } = req.body;
+    const { name, user_id } = req.body;
     
     if ( name.match(/^ *$/) ) 
         return res.status(404).json({ 
@@ -121,11 +121,12 @@ const createRoom = async (req, res) => {
             message: `Room ${name.toUpperCase()} already exits.`,
         });
 
-    const room = new Room({ name });
+    const room = new Room({ name, user_id });
     await room.save();
     res.status(200).json({ 
         status: true, 
-        message: `Room ${name.toUpperCase()} created.`, room: room,
+        message: `Room ${name.toUpperCase()} created.`, 
+        room: room,
     });
     
 };

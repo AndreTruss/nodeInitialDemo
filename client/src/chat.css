@@ -20,6 +20,7 @@
   position: relative;
   border-radius: 4px;
   background: var(--bckChat-color);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 } 
 
 .chatSection {
@@ -31,6 +32,7 @@
   position: relative;
   border-radius: 4px;
   background: var(--bckChat-color);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .chatHeader {
@@ -66,10 +68,12 @@
   height: 36px;
   width: 100%;
   text-transform: uppercase;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .chatButton:hover {
   background: var(--hover-color);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .message {
@@ -136,22 +140,12 @@ input:focus {
   color: var(--primary-color);
 }
 
-.headerHome {
-  display: flex;
-  flex-wrap: wrap;
-  align-content: center;
-  justify-content: flex-end;
-  font-size: 0.6em;
-  margin-top: 10px;
-  height: 36px;
-  color: var(--primary-color);
-}
-
 .logout {
   background: var(--primary-color);
   color: var(--gray-color);
   padding: 0.25rem;
   border-radius: 3px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .send {
@@ -160,4 +154,5 @@ input:focus {
 
 .logout:hover {
   background: var(--hover-color);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }

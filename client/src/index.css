@@ -29,25 +29,16 @@ body {
     justify-content: center;
     align-items: center;
     font-size: 1.2rem;
-    background-color: rgb(85, 85, 85);
+    background: radial-gradient(circle, #ffffcc 0%, #ccccff 100%);
 }
 
 .card {
-    background: rgb(149, 186, 198);
+    background: rgba(255, 249, 202, 0.7);
     border-radius: 5px;
     padding: 2rem 2rem;
     display: grid;
     align-items: center;
     justify-content: center;
-}
-
-.containerHome {
-    display: grid;
-    justify-content: center;
-    padding: 0 0 2rem 0;
-    width: 312px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-    border-radius: 4px;
 }
 
 .container {
@@ -72,6 +63,7 @@ body {
     font-size: 1.2em;
     font-weight: bold;
     border: 2px solid var(--primary-color);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .cardHeader2 {
@@ -86,7 +78,7 @@ body {
     text-transform: uppercase;
     font-size: 1.2em;
     font-weight: bold;
-    border: 2px solid var(--gray-color);
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .cardHeader3 {
@@ -151,6 +143,7 @@ body {
     text-transform: uppercase;
     cursor: pointer;
     margin-top: 5px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .logSignIn {
@@ -161,12 +154,14 @@ body {
     border-radius: 5px;
     text-align: center;
     background: #ffe100;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .button:hover,
 .logSignIn:hover {
     background: var(--hover-color);
     color: var(--gray-color); 
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
 .chatrooms {
@@ -227,6 +222,10 @@ body {
 .delete:hover {
     color: var(--gray-color);
     background-color: var(--hover-color);
+}
+
+.hidden {
+    display: none;
 }
 
 a {
