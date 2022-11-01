@@ -1,9 +1,11 @@
 const express = require('express');
 const routerUser = express.Router();
 
-routerUser.get('/user', function(req,res){
+const getUser = ( req, res ) => {
   const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl; 
-  res.json({ name: 'Andrea', age: '46', url: fullUrl })
-})
+  res.status( 201 ).json({ name: 'Andrea', age: '46', url: fullUrl })
+}
+
+routerUser.get('/user', getUser )
 
 module.exports = routerUser

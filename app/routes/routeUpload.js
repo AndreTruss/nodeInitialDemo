@@ -1,12 +1,10 @@
 const express = require("express");
-const uploadImage = require("../helpers/helper");
+const { createFolder } = require("../helpers/helper");
+const { uploadImage } = require("../middlewares/middleware");
 const routerUpload = express.Router();
 
-routerUpload.post('/upload', uploadImage.single('image'), ( req, res ) => {
-  try {
-      return res.status(201).json({ message: 'File uploaded successfully' });
+createFolder();
 
-  } catch (error) { console.log(error); }
-});
+routerUpload.post('/upload', uploadImage );
 
 module.exports = routerUpload;

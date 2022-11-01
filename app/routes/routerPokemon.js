@@ -16,14 +16,14 @@ const findPokemon = async (req, res) => {
     response.on('end', () => {
       try {
         const object = JSON.parse( rawData );
-        res.json({ pokemon_name: object.name, height: object.height, weight: object.weight });
+        res.status(201).json({ pokemon_name: object.name, height: object.height, weight: object.weight });
       } catch (e) {
-        console.error(e.message);
+        res.status(400).json({ errorMessage: "Pokemons from 1 to 905." })
       }
     });
 
-  }).on('error', (e) => {
-    console.error(`Got error: ${e.message}`);
+  }).on('error', () => {
+    res.status(500).json({ errorMessage: "Can't reach url" })
   });
 
 }
