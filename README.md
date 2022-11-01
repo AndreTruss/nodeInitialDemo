@@ -6,10 +6,12 @@
 ## About The Project
 
 
-![Chat-app](client/public/Screenshot.png)
+![Chat-app](client/public/screenshot.png)
 
-This is a Chat-App made as part of the IT-Academy Bootcamp. A user can sign-up via username and password. Once authenticated, you can create or join rooms to chat with other people.  
-
+This is a Chat-App, part of the IT-Academy Bootcamp NodeJS Development. 
+User can sign-up via username and password. Once authenticated, you can create or join rooms to chat with other people. 
+Only the user that has created a room can delete it. 
+User can see the other users connected in a room.
 
 ### Built With
 
@@ -29,7 +31,7 @@ The app has independent client and server
 
 ### Server Installation
 
-1. Head to the server folder
+1. Head to the 'server' folder
 
 2. Install NPM packages
    ```sh
@@ -48,7 +50,7 @@ The app has independent client and server
 
 ### Client Installation
 
-1. Head to the client folder
+1. Head to the 'client' folder
 
 2. Install NPM packages
    ```sh
@@ -67,11 +69,11 @@ POSTMAN collection contains following requests:
 
 - POST /signup  - Body form-urlencoded {key: name, password} 
 - POST /login   - Body form-urlencoded {key: name, password} 
-                - Headers {key: Authorization} paste token on value
+
 - POST /room    - Body form-urlencoded {key: name} 
-                - Headers {key: Authorization} paste token on value
+                - Headers {key: Authorization} paste token from login on {value}
 - GET /room/:id     - Params form-urlencoded {key: id} 
-                    - Headers {key: Authorization} paste token on value
+                    - Headers {key: Authorization} paste token from login on {value}
 - DELETE /room/:id  - Params form-urlencoded {key: id} 
-                    - Headers {key: Authorization} paste token on value
+                    - Headers {key: Authorization} paste token from login on {value}
  

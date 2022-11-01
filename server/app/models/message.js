@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
     user_id: { 
-        type: mongoose.Schema.Types.ObjectId, 
+        type: String, 
         required: true,  
     },
     user_name: { 
@@ -14,7 +14,7 @@ const messageSchema = new mongoose.Schema({
         required: true,  
     },
     room_id: { 
-        type: mongoose.Schema.Types.ObjectId, 
+        type: String, 
         required: true,  
     }, 
 }, { versionKey: false },{ timestamps: true });

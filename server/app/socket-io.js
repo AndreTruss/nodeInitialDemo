@@ -1,6 +1,5 @@
 const User = require( './models/user' );
 const Message = require( './models/message' );
-require('./models/room');
 const jwt = require('jsonwebtoken');
 let users = [];
 
@@ -57,6 +56,22 @@ function socketio( io ){
             const findMessages = await Message.find({ room_id })
             socket.emit('message-history', findMessages);
         });
+
+        // sockets for Home_with_socket.js variant
+
+        /* await Room.find().then((result) => {
+            io.emit('get-rooms', result);
+          });
+      
+        socket.on('create-room', (name) => {
+            const room = new Room({ name });
+            room.save().then((result) => { io.emit('room-created', result); });
+        });
+
+        socket.on('delete-room', async ( room_id ) => {
+            await Room.findByIdAndDelete(room_id);
+            await Message.deleteMany({ "room_id": room_id });
+        }) */
     });
     }
 

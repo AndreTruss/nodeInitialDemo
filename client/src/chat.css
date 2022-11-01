@@ -23,7 +23,7 @@
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 } 
 
-.chatSection {
+.chatMessage {
   width: 272px;
   /* height: 404px; */
   height: 361px;
@@ -52,7 +52,7 @@
   height: 247px;
 }
 
-.chatActions {
+.chatSendMessage {
   padding: 0.5rem;
   border-top: 2px solid var(--primary-color);
 }

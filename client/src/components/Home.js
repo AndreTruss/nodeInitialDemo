@@ -5,7 +5,7 @@ import RoomList from './RoomList';
 const Home = ({ socket }) => {
   const navigate = useNavigate();
   const url = 'http://localhost:5000/room';
-  const [chatrooms, setChatrooms] = useState([]);
+  const [chatRooms, setChatrooms] = useState([]);
   const [newRoom, setNewRoom] = useState('');
   const [text, setText] = useState('');
   const user = sessionStorage.getItem('user');
@@ -31,7 +31,7 @@ const Home = ({ socket }) => {
       getAllRooms();
       setAlert(false);
     }
-  }, [chatrooms, alert]);
+  }, [chatRooms, alert]);
 
   // Add new room
   const handleChange = e => setNewRoom(e.target.value);
@@ -61,7 +61,7 @@ const Home = ({ socket }) => {
   // Delete Room
   const deleteRoom = async e => {
     e.preventDefault();
-    setChatrooms(chatrooms.filter(chatroom => chatroom._id !== e.target.id))
+    setChatrooms(chatRooms.filter(chatroom => chatroom._id !== e.target.id))
     
     const url = 'http://localhost:5000/room/' + e.target.id;
     const options = {
@@ -87,7 +87,7 @@ const Home = ({ socket }) => {
         <div className="chatrooms">
           <div className='cardHeader3'>Join chats:</div>
           {
-          chatrooms.map(chatroom => <RoomList key={ chatroom._id } chatroom={ chatroom } onDelete={ deleteRoom } socket={socket} />)
+          chatRooms.map(chatroom => <RoomList key={ chatroom._id } chatroom={ chatroom } onDelete={ deleteRoom } socket={socket} />)
           }
         </div>
         <div className="chatShadow">

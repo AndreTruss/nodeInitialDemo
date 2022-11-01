@@ -86,7 +86,7 @@ const Chat = ({ socket }) => {
         <span className='message'>{sessionStorage.getItem('users_name')}</span>
       </div>
         <div className="cardHeader1">{chatName.toUpperCase()}</div>
-      <div className='chatSection'>
+      <div className='chatMessage'>
         <div className="chatContent">
           <STB className="messages">
             {
@@ -96,7 +96,7 @@ const Chat = ({ socket }) => {
           </STB>
         </div>
         <form autoComplete="off" onSubmit={ sendMessage }>
-          <div className="chatActions">
+          <div className="chatSendMessage">
             <div>
               <input type='text' name='message' value={ newMessage } placeholder='write a message' onChange={ handleChange } ></input>
             </div>
