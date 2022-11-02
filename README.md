@@ -37,12 +37,13 @@ The app has independent client and server
    ```sh
    npm install
    ```
-3. Rename  `.env_template` to `.env`
    
-4. If you want you can replace the mongoDB URI
+3. You have to replace the mongoDB URI in .env_template file, for exemple:
    ```js
-    MONGODB_URI=YOUR_DB_URI
+    MONGODB_URI=mongodb://localhost:27017/chat-app
    ```   
+4. Rename  `.env_template` to `.env`
+
 5. Run the server. Will run on port 5000
    ```sh
    npm start
