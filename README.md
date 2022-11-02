@@ -1,7 +1,7 @@
 
 # Node Initial Project
 
-**Nota: aquesta és la branca sockets**
+**Note: this is sockets branch**
 
 ## About The Project
 
