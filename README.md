@@ -38,9 +38,9 @@ The app has independent client and server
    npm install
    ```
    
-3. You have to replace the mongoDB URI in .env_template file, for exemple:
+3. If you want, you can replace the mongoDB URI in .env_template file, default value localhost:27017
    ```js
-    MONGODB_URI=mongodb://localhost:27017/chat-app
+    MONGODB_URI=YOUR_MONGO_URI
    ```   
 4. Rename  `.env_template` to `.env`
 
