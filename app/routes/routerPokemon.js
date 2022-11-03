@@ -18,7 +18,7 @@ const findPokemon = async (req, res) => {
         const object = JSON.parse( rawData );
         res.status(201).json({ pokemon_name: object.name, height: object.height, weight: object.weight });
       } catch (e) {
-        res.status(400).json({ errorMessage: "Pokemons from 1 to 905." })
+        res.status(400).json({ errorMessage: "Pokemons from 1 to 905 & from 10001 to 10249" })
       }
     });
 
