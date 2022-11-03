@@ -5,9 +5,8 @@ const { authentication } = require('../middlewares/middleware');
 
 const userTime = function (req, res) {
   const user = req.body.name;
-  moment.locale('es')
-  const date = moment().format('LLLL');
-  res.json({ user, date });
+  const date = moment().locale('es').format('LLLL');
+  res.status( 201 ).json({ user, date });
 }
 
 routerTime.post('/time', authentication, userTime);

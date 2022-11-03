@@ -35,7 +35,7 @@
 					"variable": [
 						{
 							"key": "id",
-							"value": "128"
+							"value": "905"
 						}
 					]
 				}
@@ -48,9 +48,6 @@
 				"disableBodyPruning": true
 			},
 			"request": {
-				"auth": {
-					"type": "noauth"
-				},
 				"method": "GET",
 				"header": [],
 				"body": {
@@ -110,13 +107,13 @@
 					"type": "basic",
 					"basic": [
 						{
-							"key": "password",
-							"value": "1234",
+							"key": "username",
+							"value": "admin",
 							"type": "string"
 						},
 						{
-							"key": "username",
-							"value": "admin",
+							"key": "password",
+							"value": "1234",
 							"type": "string"
 						}
 					]
@@ -128,7 +125,12 @@
 					"urlencoded": [
 						{
 							"key": "name",
-							"value": "Andrea",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "1234",
 							"type": "text"
 						}
 					]

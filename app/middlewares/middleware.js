@@ -1,34 +1,60 @@
 const noCacheMiddleware = (req, res ,next) => {
+
   try {
     res.set('Cache-control', 'no-cache')
     next()
   } catch (err) { next(err) }
 }
 
-const authentication = ( req, res, next ) => {
-  
-  const authHeader = req.headers.authorization;
-  if(!authHeader){
-    const err = new Error("you could not be authorized");
-      err.status = 401;
-      next(err);
-      return;
-  }
-//console.log('authHeader :'+authHeader);
-
-const auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
-//console.log(auth)
-const user = auth[0];
-const pass = auth[1];
-  if (user == 'admin' && pass =='1234') {
-      next();
-
-  }else{
-    const err = new Error("you could not be authorized");
-      err.status = 401;
-      next(err);
-
-  }
+const notFoundRoute = ( req, res ) => {
+  return res.status( 404 ).json({ message: `Url ${req.originalUrl} not found.` });
 }
 
-module.exports = { noCacheMiddleware, authentication}
+const authentication = ( req, res, next ) => {
+  try {
+    const { name, password } = req.body;
+    const authHeader = req.headers.authorization;
+
+    if(!authHeader){
+      return res.status( 401 ).json({ message: "User doesn't exist!"});
+    }
+
+    if ( name.match(/^ *$/) || password.match(/^ *$/) )
+    return res.status(404).json({ message: 'Username and Password are required, empty string refused.'});
+
+    if (name == 'admin' && password =='1234') {
+      next()
+
+    } else {
+      return res.status( 401 ).json({ message: "User NOT authorized"});
+    }
+  } catch( err) { next( err )}
+}
+
+const multer = require('multer');
+const { storage, fileFilter } = require('../helpers/helper');
+
+const uploadImage = (req, res, next) => {
+
+  // 'image' is the key of file input in Postman
+  const upload = multer({ storage, fileFilter }).single('image');
+  
+  try {
+    upload(req, res, (err) => {
+
+      if (req.fileFormatError) {
+        return res.status(401).json({ errorMessage: 'Only image files are allowed!' });
+      } 
+      if (!req.file) {
+        return res.status(404).json({ errorMessage: 'Please select an image to upload!' });
+      } 
+      if (err) {
+        return res.status(500).json(err);
+      }
+      
+      res.status(201).json({ uploadedFile: req.file.filename });
+    });
+  } catch (err) { next(err); }
+};
+
+module.exports = { noCacheMiddleware, authentication, notFoundRoute, uploadImage}
