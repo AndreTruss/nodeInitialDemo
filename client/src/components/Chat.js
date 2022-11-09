@@ -25,24 +25,30 @@ const Chat = ({ socket }) => {
   }
 
   useEffect(() => { 
+    if( socket ){
     socket.on('newMessage', message => {
       setMessages([...messages, message]);
     });
+  }
   }, [messages, socket])
 
   useEffect(() => {
+    if( socket ){
       socket.emit('join', { room_id })
       socket.on('userOnChat', (users_name) => {
         sessionStorage.setItem('users_name', users_name);
       });
+    }
   // eslint-disable-next-line
   }, [socket, room_id]);
 
   useEffect(() => {
+    if( socket ){
     socket.emit("get-message-history", room_id)
     socket.on("message-history", (result) => {
       setMessages(result)
     })
+  }
   }, [room_id, socket, messages])
 
   // Get one Room
@@ -62,8 +68,7 @@ const Chat = ({ socket }) => {
   const logout = () => {
     sessionStorage.clear();   
     navigate('/login');
-    socket.disconnect();
-    socket.connect()
+    window.location.reload( false );
   }
 
   const goBack = () => {

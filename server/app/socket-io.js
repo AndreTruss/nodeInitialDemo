@@ -44,11 +44,7 @@ function socketio( io ){
         socket.on('chatMessage', async ({ room_id, message }) => {
             const user = await User.findOne({ _id: socket.id })
             const newMessage = new Message({ room_id, user_id: socket.id, message, user_name: user.name });
-            io.to(room_id).emit('newMessage', { 
-                message,
-                user_name: user.name,
-                user_id: socket.id,
-            });
+            io.to(room_id).emit('newMessage', { message });
             await newMessage.save();
         });
 
