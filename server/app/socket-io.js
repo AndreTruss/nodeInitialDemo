@@ -30,6 +30,7 @@ function socketio( io ){
             const user = await User.findOne({ _id: socket.id })
             users.push( ` ${user.name.toUpperCase()} ` )
             await io.in(room_id).emit('userOnChat', users )
+            
             const joinMsg = `JOINS TO CHATROOM`
             const joinMessage = new Message({ room_id, user_id: socket.id, message: joinMsg, user_name: user.name.toUpperCase() });
             await io.in(room_id).emit('newMessage', joinMsg);
@@ -41,6 +42,7 @@ function socketio( io ){
             const index = users.findIndex( (el) => el == ` ${user.name.toUpperCase()} `)
             users.splice( index, 1 ),[0];
             await io.in(room_id).emit('userOffChat', users )
+
             const leaveMsg = `LEAVES CHATROOM`
             const leaveMessage = new Message({ room_id, user_id: socket.id, message: leaveMsg, user_name: user.name.toUpperCase() });
             await io.in(room_id).emit('newMessage', leaveMsg);
@@ -51,7 +53,7 @@ function socketio( io ){
     
         socket.on('chatMessage', async ({ room_id, message }) => {
             const user = await User.findOne({ _id: socket.id })
-            const newMessage = new Message({ room_id, user_id: socket.id, message, user_name: user.name });
+            const newMessage = new Message({ room_id, user_id: socket.id, message, user_name: user.name.toUpperCase() });
             await io.to(room_id).emit('newMessage', { message });
             await newMessage.save();
         });
