@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const controllers = require('../controllers/controller');
+const controllers = require('../controllers/controllerRoom');
 const { verifyJWT } = require('../middlewares/verifyToken')
-
-router.post('/signup', controllers.signup );
-router.post('/login', controllers.login );
 
 router.post('/room', verifyJWT, controllers.createRoom );
 router.get('/room', verifyJWT, controllers.getAllRooms );

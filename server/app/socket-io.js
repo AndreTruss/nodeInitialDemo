@@ -17,11 +17,11 @@ function socketio( io ){
     });
 
     io.on( 'connection', async ( socket ) => {
-        console.log( 'user connected on socket.id:', socket.id );
+        console.log( 'User connected' );
         
         socket.on('disconnect', () => {
             users = [];
-            console.log("Disconnected:", socket.id);
+            console.log("User disconnected");
         });
     
         socket.on('join', async ({ room_id }) => {
@@ -30,6 +30,10 @@ function socketio( io ){
             const user = await User.findOne({ _id: socket.id })
             users.push( ` ${user.name.toUpperCase()} ` )
             await io.in(room_id).emit('userOnChat', users )
+            const joinMsg = `JOINS TO CHATROOM`
+            const joinMessage = new Message({ room_id, user_id: socket.id, message: joinMsg, user_name: user.name.toUpperCase() });
+            await io.in(room_id).emit('newMessage', joinMsg);
+            await joinMessage.save();
         });
         
         socket.on('leave', async ({ room_id }) => {
@@ -37,6 +41,10 @@ function socketio( io ){
             const index = users.findIndex( (el) => el == ` ${user.name.toUpperCase()} `)
             users.splice( index, 1 ),[0];
             await io.in(room_id).emit('userOffChat', users )
+            const leaveMsg = `LEAVES CHATROOM`
+            const leaveMessage = new Message({ room_id, user_id: socket.id, message: leaveMsg, user_name: user.name.toUpperCase() });
+            await io.in(room_id).emit('newMessage', leaveMsg);
+            await leaveMessage.save();
 
             await socket.leave( room_id );
         });
@@ -44,13 +52,13 @@ function socketio( io ){
         socket.on('chatMessage', async ({ room_id, message }) => {
             const user = await User.findOne({ _id: socket.id })
             const newMessage = new Message({ room_id, user_id: socket.id, message, user_name: user.name });
-            io.to(room_id).emit('newMessage', { message });
+            await io.to(room_id).emit('newMessage', { message });
             await newMessage.save();
         });
 
         socket.on('get-message-history', async (room_id) => {
             const findMessages = await Message.find({ room_id })
-            socket.emit('message-history', findMessages);
+            await socket.emit('message-history', findMessages);
         });
 
         // sockets for Home_with_socket.js variant

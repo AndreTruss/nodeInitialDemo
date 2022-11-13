@@ -2,7 +2,8 @@ const express = require('express');
 const cors = require('cors');
 // const http = require('http');
 // const { Server } = require('socket.io');
-const router = require('./routes/route');
+const routerUser = require('./routes/routeUser');
+const routerRoom = require('./routes/routeRoom');
 const { connectDB } = require('./config/db');
 const  { CORS_URL }  = require('./config/config');
 const { socketio} = require('./socket-io')
@@ -20,7 +21,8 @@ app.use( express.json() );
 app.use( express.urlencoded({ extended: true }) )
 
 // Routes
-app.use( '/', router );
+app.use( '/', routerUser );
+app.use( '/', routerRoom );
 
 // DB initialization
 connectDB();
